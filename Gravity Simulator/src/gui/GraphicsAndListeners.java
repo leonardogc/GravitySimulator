@@ -19,12 +19,16 @@ import logic.Space;
 
 public class GraphicsAndListeners extends JPanel implements KeyListener, MouseListener, ActionListener{
 	
-	private Space space;
+	public Space space;
 	private GraphicInterface graphics;
-	private Timer t;
-	private boolean playing;
+	public boolean playing;
 	private int counter;
 	private long start;
+	private int x;
+	private int y;
+	private int dx;
+	private int dy;
+	private LoopThread thread;
 	
 	public GraphicsAndListeners(GraphicInterface g){
 		addKeyListener(this);
@@ -37,7 +41,12 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		
 		counter=0;
 		
-		t=new Timer(10,this);
+		dx=0;
+		dy=0;
+		
+		thread=new LoopThread(this);
+		thread.setRunning(true);
+		thread.start();
 		
 	}
 	
@@ -46,16 +55,11 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	protected void paintComponent(Graphics g) {
 	 super.paintComponent(g);
 	 
-	 double scaleFactor=0.5;
-	 double sumX= 1000*(1-scaleFactor)/2;
-	 double sumY=600*(1-scaleFactor)/2;
-	 
-	 sumX=130;
-	 sumY=50;
+	 double scaleFactor=1;
 	
 	for(int i=0;i<space.particles.size();i++){
-	 g.fillOval((int)((space.particles.get(i).posX-space.particles.get(i).diameter/2)*scaleFactor+sumX),
-			    (int)((space.particles.get(i).posY-space.particles.get(i).diameter/2)*scaleFactor+sumY),
+	 g.fillOval((int)((space.particles.get(i).posX-space.particles.get(i).diameter/2)*scaleFactor+dx),
+			    (int)((space.particles.get(i).posY-space.particles.get(i).diameter/2)*scaleFactor+dy),
 			    (int)(space.particles.get(i).diameter*scaleFactor), 
 			    (int)(space.particles.get(i).diameter*scaleFactor));
 	 }
@@ -76,7 +80,6 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			break;	
 		case KeyEvent.VK_RIGHT:
 			playing=true; 
-			t.start();
 		break;  
 		}
 		
@@ -120,33 +123,23 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
 		graphics.panel.requestFocusInWindow();
+		x=arg0.getX();
+		y=arg0.getY();
 	}
 
 
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		
+		dx=dx+(arg0.getX()-x);
+		dy=dy+(arg0.getY()-y);
 	}
 
 
 	@Override
-	public void actionPerformed(ActionEvent arg0) {
-		if(playing){
-		space.update(0.015);
-		repaint();
-		}
-		
-		if(counter==0){
-			start=System.nanoTime();
-		}
-		counter++;
-		if(counter ==1000){
-			System.out.println("Average frame duration: " + ((System.nanoTime()-start)/(double)1000000)/counter);
-			counter=0;
-		}
+	public void actionPerformed(ActionEvent e) {
+		// TODO Auto-generated method stub
 		
 	}
-
 
 }

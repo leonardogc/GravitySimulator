@@ -23,8 +23,8 @@ public Space(){
 	particles.addElement(new Particle(200,-200,-50,0,480000));
 	particles.addElement(new Particle(200,200,0,-50,480000));*/
 	
-	for(int i=0;i<44;i++){
-		for(int i2=0;i2<75;i2++){
+	for(int i=0;i<22;i++){
+		for(int i2=0;i2<37;i2++){
 			vx=r.nextInt(25)-12;
 			vy=r.nextInt(25)-12;
 			m=r.nextInt(50)+1;
