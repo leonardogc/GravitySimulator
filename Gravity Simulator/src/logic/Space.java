@@ -14,7 +14,7 @@ public double g;
 
 public Space(){
 	Random r=new Random();
-	int vx;//[-8,8]
+	int vx;//[-12,12]
 	int vy;
 	int m;//[1,50]
 	
@@ -23,10 +23,10 @@ public Space(){
 	particles.addElement(new Particle(200,-200,-50,0,480000));
 	particles.addElement(new Particle(200,200,0,-50,480000));*/
 	
-	for(int i=0;i<27;i++){
-		for(int i2=0;i2<48;i2++){
-			vx=r.nextInt(17)-8;
-			vy=r.nextInt(17)-8;
+	for(int i=0;i<44;i++){
+		for(int i2=0;i2<75;i2++){
+			vx=r.nextInt(25)-12;
+			vy=r.nextInt(25)-12;
 			m=r.nextInt(50)+1;
 		particles.addElement(new Particle(i2*25,i*25,vx,vy,m));
 	  }

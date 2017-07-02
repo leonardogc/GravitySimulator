@@ -45,12 +45,19 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	@Override
 	protected void paintComponent(Graphics g) {
 	 super.paintComponent(g);
+	 
+	 double scaleFactor=0.5;
+	 double sumX= 1000*(1-scaleFactor)/2;
+	 double sumY=600*(1-scaleFactor)/2;
+	 
+	 sumX=130;
+	 sumY=50;
 	
 	for(int i=0;i<space.particles.size();i++){
-	 g.fillOval((int)(space.particles.get(i).posX-space.particles.get(i).diameter/2),
-			    (int)(space.particles.get(i).posY-space.particles.get(i).diameter/2),
-			    (int)space.particles.get(i).diameter, 
-			    (int)space.particles.get(i).diameter);
+	 g.fillOval((int)((space.particles.get(i).posX-space.particles.get(i).diameter/2)*scaleFactor+sumX),
+			    (int)((space.particles.get(i).posY-space.particles.get(i).diameter/2)*scaleFactor+sumY),
+			    (int)(space.particles.get(i).diameter*scaleFactor), 
+			    (int)(space.particles.get(i).diameter*scaleFactor));
 	 }
 	 
 
