@@ -25,10 +25,29 @@ public Space(){
 	
 	for(int i=0;i<22;i++){
 		for(int i2=0;i2<37;i2++){
-			vx=r.nextInt(25)-12;
-			vy=r.nextInt(25)-12;
+			/*vx=Math.abs(r.nextInt(25)-12);
+			vy=Math.abs(r.nextInt(25)-12);*/
 			m=r.nextInt(50)+1;
-		particles.addElement(new Particle(i2*25,i*25,vx,vy,m));
+			
+			/*if(i<=((double)22/37)*i2 && i<=((double)-22/37)*i2+22){
+			vx=vx*-1;
+			vy=0;
+			}else if(i<=((double)22/37)*i2 && i>=((double)-22/37)*i2+22){
+				vy=vy*-1;
+				vx=0;
+			}
+             else if(i>=((double)22/37)*i2 && i>=((double)-22/37)*i2+22){
+				vy=0;
+			}
+              else if(i>=((double)22/37)*i2 && i<=((double)-22/37)*i2+22){
+            	vx=0;
+              }*/
+			if(i==0 && i2==0){
+				particles.addElement(new Particle(i2*25,i*25,100,100,m));
+			}
+			else{
+		particles.addElement(new Particle(i2*25,i*25,0,0,m));
+			}
 	  }
 	}
 	g=6;

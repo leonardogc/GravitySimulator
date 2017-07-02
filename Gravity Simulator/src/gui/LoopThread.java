@@ -5,10 +5,12 @@ public class LoopThread extends Thread{
 	 private boolean running;
 	 private double max_fps;
 	 private GraphicsAndListeners g;
+	 private int numberOfParticles; 
 
 	public LoopThread(GraphicsAndListeners g){
 		   running=false;
 	       max_fps=60;
+	       numberOfParticles=0;
 	       this.g=g;
 	}
 	
@@ -32,6 +34,11 @@ public class LoopThread extends Thread{
 	            if(g.playing){
 	        		g.space.update(1/max_fps);
 	        		g.repaint();
+	        		
+	        		if(numberOfParticles!=g.space.particles.size()){
+	        			numberOfParticles=g.space.particles.size();
+	        			System.out.println("Number of Particles: "+numberOfParticles);
+	        		}
 	        		}
 	          
 	            frameDurationMillis=(System.nanoTime()-startTime)/1000000;
@@ -51,7 +58,7 @@ public class LoopThread extends Thread{
 	                frameCounter=0;
 	                totalTime=0;
 	                ///uncomment to print the average fps
-	                 System.out.println(averageFps);
+	                 //System.out.println(averageFps);
 	            }
 
 	        }
