@@ -16,20 +16,20 @@ public Space(){
 	Random r=new Random();
 	int vx;//[-12,12]
 	int vy;
-	int m;//[1,50]
+	int m;//[1,40]
 	
 	particles=new Vector<Particle>();
 	/*particles.addElement(new Particle(0,0,0,0,1200000));
 	particles.addElement(new Particle(500,0,0,120,1200));
 	particles.addElement(new Particle(515,0,0,142,0.00012));*/
 	
-	for(int i=0;i<22;i++){
-		for(int i2=0;i2<37;i2++){
+	for(int i=0;i<25;i++){
+		for(int i2=0;i2<40;i2++){
 		    //vx=Math.abs(r.nextInt(25)-12);
 			//vy=Math.abs(r.nextInt(25)-12);
 			vx=r.nextInt(25)-12;
 			vy=r.nextInt(25)-12;
-			m=r.nextInt(50)+1;
+			m=r.nextInt(40)+1;
 			
 			/*if(i<=((double)22/37)*i2 && i<=((double)-22/37)*i2+22){
 			vx=vx*-1;
