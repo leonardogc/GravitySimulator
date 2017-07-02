@@ -23,6 +23,7 @@ public class Particle {
 		this.delete=false;
 		
 		diameter=2*Math.pow(mass/4, (double)1/3)*1.9;
+		//diameter=10;
 	}
 	
 	public void interactAcc(Particle p,double g){

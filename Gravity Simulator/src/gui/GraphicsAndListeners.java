@@ -133,6 +133,9 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		// TODO Auto-generated method stub
 		dx=dx+(arg0.getX()-x);
 		dy=dy+(arg0.getY()-y);
+		if(!playing){
+			repaint();
+		}
 	}
 
 
