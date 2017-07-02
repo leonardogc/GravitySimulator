@@ -25,8 +25,8 @@ public Space(){
 	
 	for(int i=0;i<25;i++){
 		for(int i2=0;i2<40;i2++){
-		    //vx=Math.abs(r.nextInt(25)-12);
-			//vy=Math.abs(r.nextInt(25)-12);
+		    //vx=Math.abs(r.nextInt(41)-20);
+			//vy=Math.abs(r.nextInt(41)-20);
 			vx=r.nextInt(41)-20;
 			vy=r.nextInt(41)-20;
 			m=r.nextInt(40)+1;
@@ -43,8 +43,8 @@ public Space(){
 			}
               else if(i>=((double)22/37)*i2 && i<=((double)-22/37)*i2+22){
             	vx=0;
-              }
-             */
+              }*/
+             
 			
 		particles.addElement(new Particle(i2*25,i*25,vx,vy,m));
 			
