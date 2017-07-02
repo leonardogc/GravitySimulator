@@ -16,20 +16,20 @@ public Space(){
 	Random r=new Random();
 	int vx;//[-20,20]
 	int vy;
-	int m;//[1,40]
+	int m;//[1,20]
 	
 	particles=new Vector<Particle>();
 	/*particles.addElement(new Particle(0,0,0,0,1200000));
 	particles.addElement(new Particle(500,0,0,120,1200));
 	particles.addElement(new Particle(515,0,0,142,0.00012));*/
 	
-	for(int i=0;i<25;i++){
-		for(int i2=0;i2<40;i2++){
+	for(int i=0;i<55;i++){
+		for(int i2=0;i2<100;i2++){
 		    //vx=Math.abs(r.nextInt(41)-20);
 			//vy=Math.abs(r.nextInt(41)-20);
 			vx=r.nextInt(41)-20;
 			vy=r.nextInt(41)-20;
-			m=r.nextInt(40)+1;
+			m=r.nextInt(20)+1;
 			
 			/*if(i<=((double)22/37)*i2 && i<=((double)-22/37)*i2+22){
 			vx=vx*-1;
@@ -46,7 +46,7 @@ public Space(){
               }*/
              
 			
-		particles.addElement(new Particle(i2*25,i*25,vx,vy,m));
+		particles.addElement(new Particle(i2*11,i*11,vx,vy,m));
 			
 	  }
 	}
@@ -56,11 +56,15 @@ public Space(){
 }
 
 public void update(double t){
+	
+	System.out.println("Acceleration to 0");
+	
 	for(int i =0;i< particles.size();i++){
 		particles.get(i).accX=0;
 		particles.get(i).accY=0;
 	}
 	
+	System.out.println("Calculating Acceleration");
 	
 	for(int i =0;i< particles.size();i++){
 		for(int i2=0;i2<particles.size();i2++){	
@@ -70,9 +74,14 @@ public void update(double t){
 		}
 	}
 	
+	System.out.println("Calculating Positions");
+	
 	for(int i =0;i< particles.size();i++){
 		particles.get(i).interact(t);
 	}
+	
+	System.out.println("Checking Collisions");
+	
 	
 	update_collisions();
 }
@@ -81,37 +90,33 @@ public void update_collisions(){
 	double dx;
 	double dy;
 	double r;
-	int counter=-1;
 	double mass;
 	double velX;
 	double velY;
 	double posX;
 	double posY;
 	int current;
-	boolean found;
-	double totalDiameters;
+	boolean found=true;
 	
 	Vector<Particle> newParticles=new Vector<Particle>();
 	
-	while(counter!=0){
-			counter=0;
+	
+	while(found){
 			
 			newParticles.clear();
 			
 			found=false;
 			
-			for(int i =0;i< particles.size();i++){
-				for(int i2=i+1;i2<particles.size();i2++){	
-					if(i!=i2 && !found){
+			for(int i =0;i< particles.size() && !found;i++){
+				for(int i2=i+1;i2<particles.size() && !found;i2++){	
+					
 						dx=particles.get(i).posX-particles.get(i2).posX;
 						dy=particles.get(i).posY-particles.get(i2).posY;
 						r=Math.sqrt(dx*dx+dy*dy);
 						
 					if(r<(particles.get(i).diameter/2)+(particles.get(i2).diameter/2)){
 					found=true;
-					counter++;
 					
-					totalDiameters=particles.get(i).diameter+particles.get(i2).diameter;
 					
 					mass=particles.get(i).mass+particles.get(i2).mass;
 					posX=(particles.get(i).posX*(particles.get(i).mass/mass))+(particles.get(i2).posX*(particles.get(i2).mass/mass));
@@ -126,7 +131,7 @@ public void update_collisions(){
 					
 					i=particles.size();
 					i2=particles.size();
-					}
+					
 				}		
 			}
 		}
