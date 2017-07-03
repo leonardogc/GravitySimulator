@@ -57,14 +57,12 @@ public Space(){
 
 public void update(double t){
 	
-	System.out.println("Acceleration to 0");
 	
 	for(int i =0;i< particles.size();i++){
 		particles.get(i).accX=0;
 		particles.get(i).accY=0;
 	}
 	
-	System.out.println("Calculating Acceleration");
 	
 	for(int i =0;i< particles.size();i++){
 		for(int i2=0;i2<particles.size();i2++){	
@@ -74,13 +72,11 @@ public void update(double t){
 		}
 	}
 	
-	System.out.println("Calculating Positions");
 	
 	for(int i =0;i< particles.size();i++){
 		particles.get(i).interact(t);
 	}
 	
-	System.out.println("Checking Collisions");
 	
 	
 	update_collisions();
@@ -136,7 +132,6 @@ public void update_collisions(){
 		}
 	
 		if(found){
-			System.out.println("Found "+ newParticles.size() +" Collisions" );
 			
 			current=0;
 			
