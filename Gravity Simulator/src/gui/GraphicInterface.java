@@ -8,7 +8,7 @@ import javax.swing.JPanel;
 
 public class GraphicInterface{
 
-	private JFrame frame;
+	public JFrame frame;
 	public JPanel panel;
 
 	/**

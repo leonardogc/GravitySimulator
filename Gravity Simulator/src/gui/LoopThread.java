@@ -1,5 +1,7 @@
 package gui;
 
+import java.awt.event.WindowEvent;
+
 public class LoopThread extends Thread{
 	
 	 private boolean running;
@@ -34,7 +36,13 @@ public class LoopThread extends Thread{
 	            if(g.playing){
 	        		g.space.update(1/max_fps);
 	        		g.repaint();
-	        		///g.takePicture();
+	        		
+	        		if(!(g.pictureNumber>2)){
+	        		  g.takePicture();
+	        		}
+	        		else{
+	        			running=false;
+	        		}
 	        		
 	        		if(numberOfParticles!=g.space.particles.size()){
 	        			numberOfParticles=g.space.particles.size();
@@ -63,6 +71,8 @@ public class LoopThread extends Thread{
 	            }
 
 	        }
+	        
+	        g.graphics.frame.dispatchEvent(new WindowEvent(g.graphics.frame, WindowEvent.WINDOW_CLOSING));
 
 	    }
 

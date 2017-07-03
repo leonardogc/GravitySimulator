@@ -20,7 +20,7 @@ import logic.Space;
 public class GraphicsAndListeners extends JPanel implements KeyListener, MouseListener, ActionListener{
 	
 	public Space space;
-	private GraphicInterface graphics;
+	public GraphicInterface graphics;
 	public boolean playing;
 	private int x;
 	private int y;
