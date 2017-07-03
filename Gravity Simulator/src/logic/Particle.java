@@ -30,8 +30,8 @@ public class Particle {
 	}
 	
 	public void interact(double t){
-		updateVel(t);
 		updatePos(t);
+		updateVel(t);
 	}
 	
 	public void updateAcc(Particle p,double g){
@@ -50,11 +50,12 @@ public class Particle {
 	}
 
 	public void updatePos(double t){
-		/*posX=posX+velX*t+0.5*accX*t*t;
-		posY=posY+velY*t+0.5*accY*t*t;*/
 		
-		posX=posX+velX*t;
-		posY=posY+velY*t;
+		posX=posX+velX*t+0.5*accX*t*t;
+		posY=posY+velY*t+0.5*accY*t*t;
+		
+		/*posX=posX+velX*t;
+		posY=posY+velY*t;*/
 		
 	}
 }
