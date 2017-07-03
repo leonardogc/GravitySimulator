@@ -25,6 +25,18 @@ public class Particle {
 		diameter=2*Math.pow(mass/4, (double)1/3)*1.7;
 	}
 	
+	public Particle(double posX,double posY,double velX,double velY,double mass,double diameter){
+		this.posX=posX;
+		this.posY=posY;
+		this.velX=velX;
+		this.velY=velY;
+		this.accX=0;
+		this.accY=0;
+		this.mass=mass;
+		this.delete=false;
+		this.diameter=diameter;
+	}
+	
 	public void interactAcc(Particle p,double g){
 		updateAcc(p,g);
 	}
