@@ -66,17 +66,14 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 
 	@Override
 	public void keyPressed(KeyEvent arg0) {
-		switch(arg0.getKeyCode()){ 
-		case KeyEvent.VK_LEFT: 
+		switch(arg0.getKeyCode()){ 	
+		case KeyEvent.VK_RIGHT:
 			if(playing){
 				playing=false; 
 			}
 			else{
 			playing=true; 
 			}
-			break;	
-		case KeyEvent.VK_RIGHT:
-			playing=true; 
 		break;  
 		}
 		
