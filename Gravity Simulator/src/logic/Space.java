@@ -139,6 +139,8 @@ public void update_collisions(){
 		}
 	
 		if(found){
+			System.out.println("Found "+ newParticles.size() +" Collisions" );
+			
 			current=0;
 			
 			while(current!=particles.size()){
