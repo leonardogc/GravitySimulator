@@ -37,12 +37,12 @@ public class LoopThread extends Thread{
 	        		g.space.update(1/max_fps);
 	        		g.repaint();
 	        		
-	        		if(!(g.pictureNumber>2)){
+	        		/*if(!(g.pictureNumber>7200)){
 	        		  g.takePicture();
 	        		}
 	        		else{
 	        			running=false;
-	        		}
+	        		} */
 	        		
 	        		if(numberOfParticles!=g.space.particles.size()){
 	        			numberOfParticles=g.space.particles.size();
