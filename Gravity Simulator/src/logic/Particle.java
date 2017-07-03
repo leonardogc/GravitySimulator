@@ -37,24 +37,12 @@ public class Particle {
 		this.diameter=diameter;
 	}
 	
-	public void interactAcc(Particle p,double g){
-		updateAcc(p,g);
-	}
 	
-	public void interact(double t){
+	public void updateVelocityAndPosition(double t){
 		updateVel(t);
 		updatePos(t);
 	}
 	
-	public void updateAcc(Particle p,double g){
-		double dx=posX-p.posX;
-		double dy=posY-p.posY;
-		double r2=dx*dx+dy*dy;
-		double denominator=Math.pow(r2, 1.5);
-		
-		p.accX=p.accX+(g*mass*dx)/denominator;
-		p.accY=p.accY+(g*mass*dy)/denominator;
-	}
 	
 	public void updateVel(double t){
 		velX=velX+accX*t;

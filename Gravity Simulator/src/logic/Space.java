@@ -35,7 +35,7 @@ public Space(){
 			vy=r.nextInt(41)-20;
 			m=r.nextInt(25)+1;
 			
-			if(i<=((double)55/100)*i2 && i<=((double)-55/100)*i2+22){
+			/*if(i<=((double)55/100)*i2 && i<=((double)-55/100)*i2+22){
 			vx=vx*-1;
 			vy=0;
 			}else if(i<=((double)55/100)*i2 && i>=((double)-55/100)*i2+22){
@@ -47,7 +47,7 @@ public Space(){
 			}
               else if(i>=((double)55/100)*i2 && i<=((double)-55/100)*i2+22){
             	vx=0;
-              }
+              }*/
              
 			
 		particles.addElement(new Particle(i2*11,i*11,vx,vy,m));
@@ -69,17 +69,14 @@ public void update(double t){
 	
 	
 	for(int i =0;i< particles.size();i++){
-		for(int i2=0;i2<particles.size();i2++){	
-			if(i!=i2){
-			particles.get(i).interactAcc(particles.get(i2),g);
-			}		
+		for(int i2=i+1;i2<particles.size();i2++){	
+			updateAcceleration(particles.get(i),particles.get(i2));
 		}
 	}
 	
 
-	
 	for(int i =0;i< particles.size();i++){
-		particles.get(i).interact(t);
+		particles.get(i).updateVelocityAndPosition(t);
 	}
 	
 	
@@ -157,4 +154,21 @@ public void update_collisions(){
 			}
 	  }
 	}
+
+public void updateAcceleration(Particle p1, Particle p2){
+	double dxP2=p1.posX-p2.posX;
+	double dyP2=p1.posY-p2.posY;
+	
+	double r2=dxP2*dxP2+dyP2*dyP2;
+	double denominator=Math.pow(r2, 1.5);
+	
+	p2.accX=p2.accX+(g*p1.mass*dxP2)/denominator;
+	p2.accY=p2.accY+(g*p1.mass*dyP2)/denominator;
+	
+	double dxP1=dxP2*-1;
+	double dyP1=dyP2*-1;
+	
+	p1.accX=p1.accX+(g*p2.mass*dxP1)/denominator;
+	p1.accY=p1.accY+(g*p2.mass*dyP1)/denominator;
+}
 }
