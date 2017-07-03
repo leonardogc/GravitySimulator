@@ -34,7 +34,7 @@ public class LoopThread extends Thread{
 	            if(g.playing){
 	        		g.space.update(1/max_fps);
 	        		g.repaint();
-	        		g.takePicture();
+	        		///g.takePicture();
 	        		
 	        		if(numberOfParticles!=g.space.particles.size()){
 	        			numberOfParticles=g.space.particles.size();
