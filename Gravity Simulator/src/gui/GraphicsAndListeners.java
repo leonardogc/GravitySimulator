@@ -22,13 +22,12 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	public Space space;
 	private GraphicInterface graphics;
 	public boolean playing;
-	private int counter;
-	private long start;
 	private int x;
 	private int y;
 	private int dx;
 	private int dy;
 	private LoopThread thread;
+	int pictureNumber;
 	
 	public GraphicsAndListeners(GraphicInterface g){
 		addKeyListener(this);
@@ -39,15 +38,14 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		
 		playing=false;
 		
-		counter=0;
-		
 		dx=0;
 		dy=0;
+		
+		pictureNumber=1;
 		
 		thread=new LoopThread(this);
 		thread.setRunning(true);
 		thread.start();
-		
 	}
 	
 	
@@ -142,6 +140,19 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	public void actionPerformed(ActionEvent e) {
 		// TODO Auto-generated method stub
 		
+	}
+	
+	public void takePicture() {
+	    BufferedImage img = new BufferedImage(graphics.panel.getWidth(), graphics.panel.getHeight(), BufferedImage.TYPE_INT_RGB);
+	    graphics.panel.print(img.getGraphics()); // or: panel.printAll(...);
+	    try {
+	        ImageIO.write(img, "png", new File("images/"+pictureNumber+".png"));
+	        pictureNumber++;
+	    }
+	    catch (IOException e) {
+	        // TODO Auto-generated catch block
+	        e.printStackTrace();
+	    }
 	}
 
 }
