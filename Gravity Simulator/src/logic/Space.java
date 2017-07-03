@@ -14,7 +14,7 @@ public double g;
 
 public Space(){
 	Random r=new Random();
-	int vx;//[-20,20]
+	int vx;//[-40,40]
 	int vy;
 	int m;//[1,50]
 	
@@ -31,8 +31,8 @@ public Space(){
 		for(int i2=0;i2<50;i2++){
 		    //vx=Math.abs(r.nextInt(41)-20);
 			//vy=Math.abs(r.nextInt(41)-20);
-			vx=r.nextInt(41)-20;
-			vy=r.nextInt(41)-20;
+			vx=r.nextInt(81)-40;
+			vy=r.nextInt(81)-40;
 			m=r.nextInt(50)+1;
 			
 			/*if(i<=((double)55/100)*i2 && i<=((double)-55/100)*i2+22){
