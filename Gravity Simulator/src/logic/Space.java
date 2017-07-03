@@ -19,9 +19,9 @@ public Space(){
 	int m;//[1,20]
 	
 	particles=new Vector<Particle>();
-	/*particles.addElement(new Particle(0,0,0,0,1200000));
-	particles.addElement(new Particle(500,0,0,120,1200));
-	particles.addElement(new Particle(515,0,0,142,0.00012));*/
+	/*particles.add(new Particle(0,0,0,0,1200000));
+	particles.add(new Particle(500,0,0,120,1200));
+	particles.add(new Particle(515,0,0,142,0.00012));*/
 	
 	for(int i=0;i<55;i++){
 		for(int i2=0;i2<100;i2++){
@@ -119,7 +119,6 @@ public void update_collisions(){
 					if(r<(particles.get(i).diameter/2)+(particles.get(i2).diameter/2)){
 					found=true;
 					
-					
 					mass=particles.get(i).mass+particles.get(i2).mass;
 					posX=(particles.get(i).posX*(particles.get(i).mass/mass))+(particles.get(i2).posX*(particles.get(i2).mass/mass));
 					posY=(particles.get(i).posY*(particles.get(i).mass/mass))+(particles.get(i2).posY*(particles.get(i2).mass/mass));
@@ -131,8 +130,6 @@ public void update_collisions(){
 					particles.get(i).delete=true;
 					particles.get(i2).delete=true;
 					
-					i=particles.size();
-					i2=particles.size();
 					}
 				}		
 			}
