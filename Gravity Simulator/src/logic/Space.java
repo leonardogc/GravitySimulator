@@ -19,12 +19,14 @@ public Space(){
 	int m;//[1,60]
 	
 	particles=new Vector<Particle>();
-	/*particles.add(new Particle(0,0,0,0,1200000));
-	particles.add(new Particle(500,0,0,120,1200));
-	particles.add(new Particle(515,0,0,142,0.00012));*/
+	/*particles.add(new Particle(0,0,0,0,1200000,10));
+	particles.add(new Particle(500,0,0,120,1200,10));
+	particles.add(new Particle(515,0,0,142,0.00012,10));*/
 	
-	/*particles.add(new Particle(0,0,0,0,480000,20));
-	particles.add(new Particle(200,0,0,120,1,20));*/
+	/*particles.add(new Particle(0,0,-100,0,480000,20));
+	particles.add(new Particle(300,0,0,-100,480000,20));
+	particles.add(new Particle(300,300,100,0,480000,20));
+	particles.add(new Particle(0,300,0,100,480000,20));*/
 	
 
 	for(int i=0;i<25;i++){
