@@ -107,9 +107,11 @@ public void update_collisions(){
 			
 			found=false;
 			
-			for(int i =0;i< particles.size() && !found;i++){
-				for(int i2=i+1;i2<particles.size() && !found;i2++){	
+			for(int i =0;i< particles.size();i++){
+				for(int i2=i+1;i2<particles.size();i2++){	
 					
+					if(!particles.get(i).delete && !particles.get(i2).delete){
+						
 						dx=particles.get(i).posX-particles.get(i2).posX;
 						dy=particles.get(i).posY-particles.get(i2).posY;
 						r=Math.sqrt(dx*dx+dy*dy);
@@ -131,11 +133,12 @@ public void update_collisions(){
 					
 					i=particles.size();
 					i2=particles.size();
-					
+					}
 				}		
 			}
 		}
 	
+		if(found){
 			current=0;
 			
 			while(current!=particles.size()){
@@ -149,8 +152,9 @@ public void update_collisions(){
 			
 			}
 			
-			for(int i=0;i<newParticles.size();i++){
-			particles.add(newParticles.get(i));	
+				for(int i=0;i<newParticles.size();i++){
+					particles.add(newParticles.get(i));	
+				}
 			}
 	  }
 	}

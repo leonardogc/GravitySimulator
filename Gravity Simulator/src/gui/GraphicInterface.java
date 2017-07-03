@@ -27,6 +27,7 @@ public class GraphicInterface{
 		});
 	}
 
+	
 	/**
 	 * Create the application.
 	 */
