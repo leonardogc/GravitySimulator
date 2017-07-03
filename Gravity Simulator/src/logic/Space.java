@@ -23,6 +23,9 @@ public Space(){
 	particles.add(new Particle(500,0,0,120,1200));
 	particles.add(new Particle(515,0,0,142,0.00012));*/
 	
+	/*particles.add(new Particle(500,300,0,0,480000));
+	particles.add(new Particle(700,300,0,130,0.000004));*/
+	
 	for(int i=0;i<55;i++){
 		for(int i2=0;i2<100;i2++){
 		    //vx=Math.abs(r.nextInt(41)-20);
@@ -71,7 +74,6 @@ public void update(double t){
 			}		
 		}
 	}
-	
 	
 	for(int i =0;i< particles.size();i++){
 		particles.get(i).interact(t);

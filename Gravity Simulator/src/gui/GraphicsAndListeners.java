@@ -64,7 +64,6 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			    (int)(space.particles.get(i).diameter*scaleFactor));
 	 }
 	 
-
 	}
 
 	@Override
