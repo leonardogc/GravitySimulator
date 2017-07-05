@@ -9,33 +9,33 @@ public Vector<Particle> particles;
 public double g;
 
 
-//Everything in SI units except mass, which was divided by 10^11,
-//and to compensate the G constant was multiplied by 10^11.
+//Everything in SI units except mass, which was divided by 10^12,
+//and to compensate the G constant was multiplied by 10^12.
 
 public Space(){
 	Random r=new Random();
 	int vx;//[-50,50]
 	int vy;
-	int m;//[1,60]
+	double m;//[0.1,6]
 	
 	particles=new Vector<Particle>();
-	/*particles.add(new Particle(0,0,0,0,1200000,10));
-	particles.add(new Particle(500,0,0,120,1200,10));
-	particles.add(new Particle(515,0,0,142,0.00012,10));*/
+	/*particles.add(new Particle(0,0,0,0,120000,10));
+	particles.add(new Particle(500,0,0,120,120,10));
+	particles.add(new Particle(515,0,0,142,0.000012,10));*/
 	
-	/*particles.add(new Particle(0,0,-100,0,480000,20));
-	particles.add(new Particle(300,0,0,-100,480000,20));
-	particles.add(new Particle(300,300,100,0,480000,20));
-	particles.add(new Particle(0,300,0,100,480000,20));*/
+	/*particles.add(new Particle(0,0,-100,0,48000,20));
+	particles.add(new Particle(300,0,0,-100,48000,20));
+	particles.add(new Particle(300,300,100,0,48000,20));
+	particles.add(new Particle(0,300,0,100,48000,20));*/
 	
 
 	for(int i=0;i<25;i++){
 		for(int i2=0;i2<50;i2++){
-		    //vx=Math.abs(r.nextInt(41)-20);
-			//vy=Math.abs(r.nextInt(41)-20);
+		    //vx=Math.abs(r.nextInt(101)-50);
+			//vy=Math.abs(r.nextInt(101)-50);
 			vx=r.nextInt(101)-50;
 			vy=r.nextInt(101)-50;
-			m=r.nextInt(60)+1;
+			m=(double)(r.nextInt(60)+1)/10;
 			
 			/*if(i<=((double)55/100)*i2 && i<=((double)-55/100)*i2+22){
 			vx=vx*-1;
@@ -57,7 +57,7 @@ public Space(){
 	  }
 	}
 	
-	g=6;
+	g=60;
 	
 }
 
