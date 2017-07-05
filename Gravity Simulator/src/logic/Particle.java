@@ -22,6 +22,7 @@ public class Particle {
 		this.mass=mass;
 		this.delete=false;
 		
+		
 		diameter=2*Math.pow(mass/4, (double)1/3)*3;
 	}
 	

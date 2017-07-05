@@ -29,7 +29,6 @@ public Space(){
 	particles.add(new Particle(0,300,0,100,48000,20));*/
 	
 	
-
 	for(int i=0;i<25;i++){
 		for(int i2=0;i2<50;i2++){
 //		    vx=Math.abs(r.nextInt(101)-50);

@@ -33,6 +33,7 @@ public class LoopThread extends Thread{
 	        while(running){
 	            startTime= System.nanoTime();
 	            
+	            
 	            if(g.playing){
 	        		g.space.update(1/max_fps);
 	        		g.repaint();
