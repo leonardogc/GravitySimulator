@@ -28,26 +28,27 @@ public Space(){
 	particles.add(new Particle(300,300,100,0,48000,20));
 	particles.add(new Particle(0,300,0,100,48000,20));*/
 	
+	
 
 	for(int i=0;i<25;i++){
 		for(int i2=0;i2<50;i2++){
-		    //vx=Math.abs(r.nextInt(101)-50);
-			//vy=Math.abs(r.nextInt(101)-50);
+//		    vx=Math.abs(r.nextInt(101)-50);
+//			vy=Math.abs(r.nextInt(101)-50);
 			vx=r.nextInt(101)-50;
 			vy=r.nextInt(101)-50;
-			m=(double)(r.nextInt(60)+1)/10;
+			m=(double)(r.nextInt(100)+1)/10;
 			
-			/*if(i<=((double)55/100)*i2 && i<=((double)-55/100)*i2+22){
+			/*if(i<=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
 			vx=vx*-1;
 			vy=0;
-			}else if(i<=((double)55/100)*i2 && i>=((double)-55/100)*i2+22){
+			}else if(i<=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
 				vy=vy*-1;
 				vx=0;
 			}
-             else if(i>=((double)55/100)*i2 && i>=((double)-55/100)*i2+22){
+             else if(i>=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
 				vy=0;
 			}
-              else if(i>=((double)55/100)*i2 && i<=((double)-55/100)*i2+22){
+              else if(i>=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
             	vx=0;
               }*/
              
