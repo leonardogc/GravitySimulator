@@ -14,11 +14,12 @@ public double g;
 
 public Space(){
 	Random r=new Random();
-	int vx;//[-50,50]
+	int vx;//[-80,80]
 	int vy;
-	double m;//[0.1,6]
+	double m;//[0.1,10]
 	
 	particles=new Vector<Particle>();
+	
 	/*particles.add(new Particle(0,0,0,0,120000,10));
 	particles.add(new Particle(500,0,0,120,120,10));
 	particles.add(new Particle(515,0,0,142,0.000012,10));*/
@@ -29,12 +30,13 @@ public Space(){
 	particles.add(new Particle(0,300,0,100,48000,20));*/
 	
 	
-	for(int i=0;i<25;i++){
-		for(int i2=0;i2<50;i2++){
-//		    vx=Math.abs(r.nextInt(101)-50);
-//			vy=Math.abs(r.nextInt(101)-50);
-			vx=r.nextInt(101)-50;
-			vy=r.nextInt(101)-50;
+	
+	for(int i=0;i<50;i++){
+		for(int i2=0;i2<100;i2++){
+//		    vx=Math.abs(r.nextInt(161)-80);
+//			vy=Math.abs(r.nextInt(161)-80);
+			vx=r.nextInt(161)-80;
+			vy=r.nextInt(161)-80;
 			m=(double)(r.nextInt(100)+1)/10;
 			
 			/*if(i<=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
@@ -52,7 +54,7 @@ public Space(){
               }*/
              
 			
-		particles.addElement(new Particle(i2*20,i*20,vx,vy,m));
+		particles.addElement(new Particle(i2*10,i*10,vx,vy,m));
 			
 	  }
 	}
