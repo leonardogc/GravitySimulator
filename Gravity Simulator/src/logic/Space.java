@@ -335,14 +335,6 @@ public void update_collisions_v3(){
 					}
 					
 					
-					/*velX=((particles.get(i).mass*particles.get(i).velX)+(particles.get(i2).mass*particles.get(i2).velX))/mass;
-					velY=((particles.get(i).mass*particles.get(i).velY)+(particles.get(i2).mass*particles.get(i2).velY))/mass;
-					
-					particles.get(i).velX=velX;
-					particles.get(i2).velX=velX;
-					particles.get(i).velY=velY;
-					particles.get(i2).velY=velY;*/
-					
 					ex[0]=dx/r;
 					ex[1]=dy/r;
 					
@@ -372,8 +364,10 @@ public void update_collisions_v3(){
 						v2_ex=0;
 					}
 					
-					
-					
+					particles.get(i).velX=v1_ex*ex_1[0]+v1_ey*ex_1[1];
+					particles.get(i).velY=v1_ex*ey_1[0]+v1_ey*ey_1[1];
+					particles.get(i2).velX=v2_ex*ex_1[0]+v2_ey*ex_1[1];
+					particles.get(i2).velX=v2_ex*ey_1[0]+v2_ey*ey_1[1];
 					
 					particles.get(i).selected=true;
 					particles.get(i2).selected=true;
