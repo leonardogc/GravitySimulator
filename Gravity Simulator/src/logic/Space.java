@@ -112,7 +112,7 @@ public void update_collisions(){
 			for(int i =0;i< particles.size();i++){
 				for(int i2=i+1;i2<particles.size();i2++){	
 					
-					if(!particles.get(i).delete && !particles.get(i2).delete){
+					if(!particles.get(i).selected && !particles.get(i2).selected){
 						
 						dx=particles.get(i).posX-particles.get(i2).posX;
 						dy=particles.get(i).posY-particles.get(i2).posY;
@@ -129,8 +129,8 @@ public void update_collisions(){
 					
 					newParticles.add(new Particle(posX,posY,velX,velY,mass));
 					
-					particles.get(i).delete=true;
-					particles.get(i2).delete=true;
+					particles.get(i).selected=true;
+					particles.get(i2).selected=true;
 					
 					}
 				}		
@@ -143,7 +143,7 @@ public void update_collisions(){
 			
 			while(current!=particles.size()){
 				
-				if(particles.get(current).delete){
+				if(particles.get(current).selected){
 					particles.remove(current);
 				}
 				else{
@@ -154,6 +154,84 @@ public void update_collisions(){
 			
 				for(int i=0;i<newParticles.size();i++){
 					particles.add(newParticles.get(i));	
+				}
+			}
+	  }
+	}
+
+public void update_collisions_v2(){
+	double dx;
+	double dy;
+	double r;
+	double x;
+	double y;
+	double mass;
+	double velX;
+	double velY;
+	double targetDistance;
+	boolean found=true;
+	
+	
+	while(found){
+			
+			found=false;
+			
+			for(int i =0;i< particles.size();i++){
+				for(int i2=i+1;i2<particles.size();i2++){	
+					
+					if(!particles.get(i).selected && !particles.get(i2).selected){
+						
+						dx=particles.get(i).posX-particles.get(i2).posX;
+						dy=particles.get(i).posY-particles.get(i2).posY;
+						r=Math.sqrt(dx*dx+dy*dy);
+						targetDistance=1+(particles.get(i).diameter+particles.get(i2).diameter)/2;
+						
+					if(r<targetDistance){
+					found=true;
+					mass=particles.get(i).mass+particles.get(i2).mass;
+					
+					x=(targetDistance-r)*Math.abs(dx)/r;
+					y=(targetDistance-r)*Math.abs(dy)/r;
+					
+					if(dx<0){
+						particles.get(i).posX=particles.get(i).posX-(particles.get(i).mass/mass)*x;
+						particles.get(i2).posX=particles.get(i2).posX+(particles.get(i2).mass/mass)*x;
+					}
+					else{
+						particles.get(i).posX=particles.get(i).posX+(particles.get(i).mass/mass)*x;
+						particles.get(i2).posX=particles.get(i2).posX-(particles.get(i2).mass/mass)*x;
+					}
+					
+					if(dy<0){
+						particles.get(i).posY=particles.get(i).posY-(particles.get(i).mass/mass)*y;
+						particles.get(i2).posY=particles.get(i2).posY+(particles.get(i2).mass/mass)*y;
+					}
+					else{
+						particles.get(i).posY=particles.get(i).posY+(particles.get(i).mass/mass)*y;
+						particles.get(i2).posY=particles.get(i2).posY-(particles.get(i2).mass/mass)*y;
+					}
+					
+					
+					velX=((particles.get(i).mass*particles.get(i).velX)+(particles.get(i2).mass*particles.get(i2).velX))/mass;
+					velY=((particles.get(i).mass*particles.get(i).velY)+(particles.get(i2).mass*particles.get(i2).velY))/mass;
+					
+					particles.get(i).velX=velX;
+					particles.get(i2).velX=velX;
+					particles.get(i).velY=velY;
+					particles.get(i2).velY=velY;
+					
+					particles.get(i).selected=true;
+					particles.get(i2).selected=true;
+					
+					}
+				}		
+			}
+		}
+	
+		if(found){
+			
+		    for(int i=0;i<particles.size();i++){
+					particles.get(i).selected=false;
 				}
 			}
 	  }

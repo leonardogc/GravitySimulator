@@ -8,7 +8,7 @@ public class Particle {
 	public double accX;
 	public double accY;
 	public double mass;
-	public boolean delete;
+	public boolean selected;
 	public double diameter;
 	
 	
@@ -20,7 +20,7 @@ public class Particle {
 		this.accX=0;
 		this.accY=0;
 		this.mass=mass;
-		this.delete=false;
+		this.selected=false;
 		
 		
 		diameter=2*Math.pow(mass/4, (double)1/3)*3.2;
@@ -38,7 +38,7 @@ public class Particle {
 		this.accX=0;
 		this.accY=0;
 		this.mass=mass;
-		this.delete=false;
+		this.selected=false;
 		this.diameter=diameter;
 	}
 	
