@@ -288,8 +288,6 @@ public void update_collisions_v3(){
 	double v2_ex;
 	double v2_ey;
 	double mass;
-	double velX;
-	double velY;
 	double targetDistance;
 	boolean found=true;
 	
