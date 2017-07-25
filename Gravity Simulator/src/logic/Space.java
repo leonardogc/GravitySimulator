@@ -29,9 +29,6 @@ public Space(){
 	particles.add(new Particle(300,300,100,0,48000,20));
 	particles.add(new Particle(0,300,0,100,48000,20));*/
 	
-	/*particles.add(new Particle(0,0,0,0,48000,50));
-	particles.add(new Particle(300,300,0,0,48000,50));
-	particles.add(new Particle(500,0,0,0,48000,50));*/
 	
 //	for(int i=0;i<50;i++){
 //		for(int i2=0;i2<100;i2++){
@@ -119,7 +116,7 @@ public void update(double t){
 		particles.get(i).updateVelocityAndPosition(t);
 	}
 	
-	update_collisions_v2();
+	update_collisions_v3();
 	
 }
 
@@ -365,7 +362,7 @@ public void update_collisions_v3(){
 					particles.get(i).velX=v1_ex*ex_1[0]+v1_ey*ex_1[1];
 					particles.get(i).velY=v1_ex*ey_1[0]+v1_ey*ey_1[1];
 					particles.get(i2).velX=v2_ex*ex_1[0]+v2_ey*ex_1[1];
-					particles.get(i2).velX=v2_ex*ey_1[0]+v2_ey*ey_1[1];
+					particles.get(i2).velY=v2_ex*ey_1[0]+v2_ey*ey_1[1];
 					
 					particles.get(i).selected=true;
 					particles.get(i2).selected=true;
