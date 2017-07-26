@@ -105,7 +105,10 @@ public Space(){
 	  }
 	}
 	
-	particles.addElement(new Particle(180,-2500,0,100,300));
+	particles.addElement(new Particle(180,-4500,0,300,100));
+	particles.addElement(new Particle(180,4860,0,-300,100));
+	particles.addElement(new Particle(4930,180,-300,0,100));
+	particles.addElement(new Particle(-4570,180,300,0,100));
 	
 	
 	g=60;
