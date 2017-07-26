@@ -28,13 +28,13 @@ public class GraphicInterface{
 	}
 
 	
-	
 	/**
 	 * Create the application.
 	 */
 	public GraphicInterface() {
 		initialize();
 	}
+	
 	
 	/**
 	 * Initialize the contents of the frame.
