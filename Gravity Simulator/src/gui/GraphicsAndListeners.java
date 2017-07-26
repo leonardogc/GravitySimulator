@@ -33,7 +33,7 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		addKeyListener(this);
 		addMouseListener(this);
 		
-		space=new Space(1);
+		space=new Space(4);
 		this.graphics=g;
 		
 		playing=false;
@@ -61,6 +61,13 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			    (int)(space.particles.get(i).diameter*scaleFactor), 
 			    (int)(space.particles.get(i).diameter*scaleFactor));
 	 }
+	
+	//screen_edges=new int[]{0,0,1184,662};
+	
+	g.drawLine((int)(space.screen_edges[0]*scaleFactor+dx), (int)(space.screen_edges[1]*scaleFactor+dy), (int)(space.screen_edges[2]*scaleFactor+dx), (int)(space.screen_edges[1]*scaleFactor+dy));
+	g.drawLine((int)(space.screen_edges[0]*scaleFactor+dx), (int)(space.screen_edges[3]*scaleFactor+dy), (int)(space.screen_edges[2]*scaleFactor+dx), (int)(space.screen_edges[3]*scaleFactor+dy));
+	g.drawLine((int)(space.screen_edges[0]*scaleFactor+dx), (int)(space.screen_edges[1]*scaleFactor+dy), (int)(space.screen_edges[0]*scaleFactor+dx), (int)(space.screen_edges[3]*scaleFactor+dy));
+	g.drawLine((int)(space.screen_edges[2]*scaleFactor+dx), (int)(space.screen_edges[1]*scaleFactor+dy), (int)(space.screen_edges[2]*scaleFactor+dx), (int)(space.screen_edges[3]*scaleFactor+dy));
 	 
 	}
 

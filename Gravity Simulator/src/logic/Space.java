@@ -124,8 +124,8 @@ public Space(int type){
 		
 		for(int i=0;i<10;i++){
 			for(int i2=0;i2<10;i2++){
-				vx=r.nextInt(21)-10;
-				vy=r.nextInt(21)-10;
+				vx=r.nextInt(61)-30;
+				vy=r.nextInt(61)-30;
 				m=(double)(r.nextInt(100)+1);
 				
 			particles.addElement(new Particle(10+i2*40,10+i*40,vx,vy,m));
