@@ -60,20 +60,51 @@ public Space(){
 	
 	
 	
-	for(int i=0;i<10;i++){
-	for(int i2=0;i2<10;i2++){
-		vx=r.nextInt(21)-10;
-		vy=r.nextInt(21)-10;
-		m=(double)(r.nextInt(100)+1)/10;
-		
-		vx=0;
-		vy=0;
-		m=30;
+//	for(int i=0;i<10;i++){
+//	for(int i2=0;i2<10;i2++){
+//		vx=r.nextInt(21)-10;
+//		vy=r.nextInt(21)-10;
+//		m=(double)(r.nextInt(100)+1)/10;
+//		
+//		vx=0;
+//		vy=0;
+//		m=30;
+//	
+//	particles.addElement(new Particle(i2*40,i*40,vx,vy,m));
+//		
+//  }
+//}
 	
-	particles.addElement(new Particle(i2*40,i*40,vx,vy,m));
+	for(int i=0;i<10;i++){
+		for(int i2=0;i2<5;i2++){
+			vx=r.nextInt(21)-10;
+			vy=r.nextInt(21)-10;
+			m=(double)(r.nextInt(100)+1)/10;
+			
+			vx=0;
+			vy=0;
+			m=30;
 		
-  }
-}
+		particles.addElement(new Particle(i2*40-70,i*40,vx,vy,m));
+			
+	  }
+	}
+	
+	for(int i=0;i<10;i++){
+		for(int i2=5;i2<10;i2++){
+			vx=r.nextInt(21)-10;
+			vy=r.nextInt(21)-10;
+			m=(double)(r.nextInt(100)+1)/10;
+			
+			vx=0;
+			vy=0;
+			m=30;
+		
+		particles.addElement(new Particle(70+i2*40,i*40,vx,vy,m));
+			
+	  }
+	}
+	
 	particles.addElement(new Particle(180,-2000,0,100,300));
 	
 	
