@@ -105,7 +105,7 @@ public Space(){
 	  }
 	}
 	
-	particles.addElement(new Particle(180,-2000,0,100,300));
+	particles.addElement(new Particle(180,-2500,0,100,300));
 	
 	
 	g=60;
@@ -299,7 +299,6 @@ public void update_collisions_v3(){
 	double v1_ey;
 	double v2_ex;
 	double v2_ey;
-	double mass;
 	double targetDistance;
 	boolean found=true;
 	
@@ -321,29 +320,27 @@ public void update_collisions_v3(){
 						
 					if(r<targetDistance-1){
 					found=true;
-					mass=particles.get(i).mass+particles.get(i2).mass;
 					
 					x=(targetDistance-r)*Math.abs(dx)/r;
 					y=(targetDistance-r)*Math.abs(dy)/r;
 					
 					if(dx<0){
-						particles.get(i).posX=particles.get(i).posX-(particles.get(i).mass/mass)*x;
-						particles.get(i2).posX=particles.get(i2).posX+(particles.get(i2).mass/mass)*x;
+						particles.get(i).posX=particles.get(i).posX-0.5*x;
+						particles.get(i2).posX=particles.get(i2).posX+0.5*x;
 					}
 					else{
-						particles.get(i).posX=particles.get(i).posX+(particles.get(i).mass/mass)*x;
-						particles.get(i2).posX=particles.get(i2).posX-(particles.get(i2).mass/mass)*x;
+						particles.get(i).posX=particles.get(i).posX+0.5*x;
+						particles.get(i2).posX=particles.get(i2).posX-0.5*x;
 					}
 					
 					if(dy<0){
-						particles.get(i).posY=particles.get(i).posY-(particles.get(i).mass/mass)*y;
-						particles.get(i2).posY=particles.get(i2).posY+(particles.get(i2).mass/mass)*y;
+						particles.get(i).posY=particles.get(i).posY-0.5*y;
+						particles.get(i2).posY=particles.get(i2).posY+0.5*y;
 					}
 					else{
-						particles.get(i).posY=particles.get(i).posY+(particles.get(i).mass/mass)*y;
-						particles.get(i2).posY=particles.get(i2).posY-(particles.get(i2).mass/mass)*y;
+						particles.get(i).posY=particles.get(i).posY+0.5*y;
+						particles.get(i2).posY=particles.get(i2).posY-0.5*y;
 					}
-					
 					
 					ex[0]=dx/r;
 					ex[1]=dy/r;
@@ -378,6 +375,8 @@ public void update_collisions_v3(){
 					particles.get(i).velY=v1_ex*ey_1[0]+v1_ey*ey_1[1];
 					particles.get(i2).velX=v2_ex*ex_1[0]+v2_ey*ex_1[1];
 					particles.get(i2).velY=v2_ex*ey_1[0]+v2_ey*ey_1[1];
+					
+					
 					
 					particles.get(i).selected=true;
 					particles.get(i2).selected=true;
