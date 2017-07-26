@@ -62,35 +62,19 @@ public Space(){
 	
 	for(int i=0;i<10;i++){
 	for(int i2=0;i2<10;i2++){
-//	    vx=Math.abs(r.nextInt(161)-80);
-//		vy=Math.abs(r.nextInt(161)-80);
 		vx=r.nextInt(21)-10;
 		vy=r.nextInt(21)-10;
 		m=(double)(r.nextInt(100)+1)/10;
 		
 		vx=0;
 		vy=0;
-		
-		/*if(i<=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
-		vx=vx*-1;
-		vy=0;
-		}else if(i<=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
-			vy=vy*-1;
-			vx=0;
-		}
-         else if(i>=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
-			vy=0;
-		}
-          else if(i>=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
-        	vx=0;
-          }*/
-         
-		
-	particles.addElement(new Particle(i2*20,i*20,vx,vy,m));
+		m=30;
+	
+	particles.addElement(new Particle(i2*40,i*40,vx,vy,m));
 		
   }
 }
-	particles.addElement(new Particle(90,-10000,0,500,20));
+	particles.addElement(new Particle(180,-5000,0,100,300));
 	
 	g=60;
 	
