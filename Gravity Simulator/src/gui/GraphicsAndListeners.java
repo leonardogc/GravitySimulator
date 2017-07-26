@@ -33,7 +33,7 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		addKeyListener(this);
 		addMouseListener(this);
 		
-		space=new Space();
+		space=new Space(1);
 		this.graphics=g;
 		
 		playing=false;

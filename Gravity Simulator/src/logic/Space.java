@@ -6,19 +6,26 @@ import java.util.Vector;
 public class Space {
 	
 public Vector<Particle> particles;
-public double g;
+public double g=60;
+public int type;
+
+public int[] screen_edges;
 
 
 //Everything in SI units except mass, which was divided by 10^12,
 //and to compensate the G constant was multiplied by 10^12.
 
-public Space(){
+public Space(int type){
+	this.type=type;
+	
 	Random r=new Random();
 	int vx;//[-80,80]
 	int vy;
 	double m;//[0.1,10]
 	
 	particles=new Vector<Particle>();
+	
+	if(type!=4){
 	
 	/*particles.add(new Particle(0,0,0,0,120000,10));
 	particles.add(new Particle(500,0,0,120,120,10));
@@ -111,32 +118,54 @@ public Space(){
 	particles.addElement(new Particle(4930,180,-300,0,100));
 	particles.addElement(new Particle(-4570,180,300,0,100));
 	
-	
-	g=60;
-	
+	}
+	else if(type==4){
+		screen_edges=new int[]{0,0,1184,662};
+		
+		for(int i=0;i<10;i++){
+			for(int i2=0;i2<10;i2++){
+				vx=r.nextInt(21)-10;
+				vy=r.nextInt(21)-10;
+				m=(double)(r.nextInt(100)+1);
+				
+			particles.addElement(new Particle(10+i2*40,10+i*40,vx,vy,m));
+				
+		  }
+		}
+	}
 }
 
 public void update(double t){
-	
-	for(int i =0;i< particles.size();i++){
-		particles.get(i).accX=0;
-		particles.get(i).accY=0;
-	}
-	
-	
-	for(int i =0;i< particles.size();i++){
-		for(int i2=i+1;i2<particles.size();i2++){	
-			updateAcceleration(particles.get(i),particles.get(i2));
+
+	if(type!=4){
+		for(int i =0;i< particles.size();i++){
+			particles.get(i).accX=0;
+			particles.get(i).accY=0;
+		}
+
+
+		for(int i =0;i< particles.size();i++){
+			for(int i2=i+1;i2<particles.size();i2++){	
+				updateAcceleration(particles.get(i),particles.get(i2));
+			}
 		}
 	}
-	
 
 	for(int i =0;i< particles.size();i++){
 		particles.get(i).updateVelocityAndPosition(t);
 	}
 	
-	update_collisions_v3();
-	
+	if(type==1){
+		update_collisions();
+	}else if(type==2){
+		update_collisions_v2();
+	}
+	else if(type==3){
+		update_collisions_v3();
+	}
+	else if(type==4){
+		update_collisions_v4();
+	}
 }
 
 public void update_collisions(){
@@ -398,6 +427,134 @@ public void update_collisions_v3(){
 			}
 	  }
 	}
+
+public void update_collisions_v4(){
+	double dx;
+	double dy;
+	double r;
+	double x;
+	double y;
+	double ex[]=new double[2];
+	double ey[]=new double[2];
+	double ex_1[]=new double[2];
+	double ey_1[]=new double[2];
+	double v1_ex;
+	double v1_ey;
+	double v2_ex;
+	double v2_ey;
+	double targetDistance;
+	boolean found=true;
+	
+	
+	while(found){
+			
+			found=false;
+			
+			
+			for(int i =0;i< particles.size();i++){
+				for(int i2=i+1;i2<particles.size();i2++){	
+					
+					if(!particles.get(i).selected && !particles.get(i2).selected){
+						
+						dx=particles.get(i).posX-particles.get(i2).posX;
+						dy=particles.get(i).posY-particles.get(i2).posY;
+						r=Math.sqrt(dx*dx+dy*dy);
+						targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
+						
+					if(r<targetDistance-1){
+					found=true;
+					
+					x=(targetDistance-r)*Math.abs(dx)/r;
+					y=(targetDistance-r)*Math.abs(dy)/r;
+					
+					if(dx<0){
+						particles.get(i).posX=particles.get(i).posX-0.5*x;
+						particles.get(i2).posX=particles.get(i2).posX+0.5*x;
+					}
+					else{
+						particles.get(i).posX=particles.get(i).posX+0.5*x;
+						particles.get(i2).posX=particles.get(i2).posX-0.5*x;
+					}
+					
+					if(dy<0){
+						particles.get(i).posY=particles.get(i).posY-0.5*y;
+						particles.get(i2).posY=particles.get(i2).posY+0.5*y;
+					}
+					else{
+						particles.get(i).posY=particles.get(i).posY+0.5*y;
+						particles.get(i2).posY=particles.get(i2).posY-0.5*y;
+					}
+					
+					ex[0]=dx/r;
+					ex[1]=dy/r;
+					
+					ey[0]=-ex[1];
+					ey[1]=ex[0];
+					
+					ex_1[0]=ex[0];
+					ex_1[1]=-ex[1];
+					ey_1[0]=-ey[0];
+					ey_1[1]=ey[1];
+					
+					v1_ex=particles.get(i).velX*ex[0]+particles.get(i).velY*ex[1];
+					v1_ey=particles.get(i).velX*ey[0]+particles.get(i).velY*ey[1];
+					v2_ex=particles.get(i2).velX*ex[0]+particles.get(i2).velY*ex[1];
+					v2_ey=particles.get(i2).velX*ey[0]+particles.get(i2).velY*ey[1];
+					
+					if(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass==0){
+					v1_ex=0;
+					v2_ex=0;
+					}
+					else if(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass<0){
+						v2_ex=(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass)/particles.get(i2).mass;
+						v1_ex=0;
+					}
+					else if(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass>0){
+						v1_ex=(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass)/particles.get(i).mass;
+						v2_ex=0;
+					}
+					
+					particles.get(i).velX=v1_ex*ex_1[0]+v1_ey*ex_1[1];
+					particles.get(i).velY=v1_ex*ey_1[0]+v1_ey*ey_1[1];
+					particles.get(i2).velX=v2_ex*ex_1[0]+v2_ey*ex_1[1];
+					particles.get(i2).velY=v2_ex*ey_1[0]+v2_ey*ey_1[1];
+					
+					
+					
+					particles.get(i).selected=true;
+					particles.get(i2).selected=true;
+					
+					}
+				}		
+			}
+		}
+	
+		if(found){
+			
+		    for(int i=0;i<particles.size();i++){
+					particles.get(i).selected=false;
+				}
+			}
+	  }
+	
+	for(int i=0;i< particles.size();i++){
+		
+		if(particles.get(i).posX<=screen_edges[0]+particles.get(i).diameter/2 && particles.get(i).velX<0){
+			particles.get(i).velX=-particles.get(i).velX;
+		}
+		else if(particles.get(i).posY<=screen_edges[1]+particles.get(i).diameter/2 && particles.get(i).velY<0){
+			particles.get(i).velY=-particles.get(i).velY;
+		}
+		else if(particles.get(i).posX>=screen_edges[2]-particles.get(i).diameter/2 && particles.get(i).velX>0){
+			particles.get(i).velX=-particles.get(i).velX;
+		}
+		else if(particles.get(i).posY>=screen_edges[3]-particles.get(i).diameter/2 && particles.get(i).velY>0){
+			particles.get(i).velY=-particles.get(i).velY;
+		}
+	}
+	
+	}
+
 
 public void updateAcceleration(Particle p1, Particle p2){
 	double dxP2=p1.posX-p2.posX;
