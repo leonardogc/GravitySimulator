@@ -12,6 +12,7 @@ public class Particle {
 	public double diameter;
 	
 	
+	
 	public Particle(double posX,double posY,double velX,double velY,double mass){
 		this.posX=posX;
 		this.posY=posY;
@@ -21,7 +22,6 @@ public class Particle {
 		this.accY=0;
 		this.mass=mass;
 		this.selected=false;
-		
 		
 		diameter=2*Math.pow(mass/4, (double)1/3)*3.2;
 		

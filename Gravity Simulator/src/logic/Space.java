@@ -90,6 +90,7 @@ public Space(){
 	  }
 	}
 	
+	
 	for(int i=0;i<10;i++){
 		for(int i2=5;i2<10;i2++){
 			vx=r.nextInt(21)-10;

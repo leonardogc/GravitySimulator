@@ -49,7 +49,6 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	}
 	
 	
-	
 	@Override
 	protected void paintComponent(Graphics g) {
 	 super.paintComponent(g);

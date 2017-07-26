@@ -62,6 +62,7 @@ public class LoopThread extends Thread{
 	                }
 	            }catch(Exception e){ e.printStackTrace();}
 
+	            
 	            totalTime=totalTime+(System.nanoTime()-startTime);
 	            frameCounter++;
 
