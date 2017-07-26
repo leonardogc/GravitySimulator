@@ -11,7 +11,7 @@ public class LoopThread extends Thread{
 
 	public LoopThread(GraphicsAndListeners g){
 		   running=false;
-	       max_fps=60;
+	       max_fps=120;
 	       numberOfParticles=0;
 	       this.g=g;
 	}
@@ -32,7 +32,6 @@ public class LoopThread extends Thread{
 
 	        while(running){
 	            startTime= System.nanoTime();
-	            
 	            
 	            if(g.playing){
 	        		g.space.update(1/max_fps);
@@ -71,7 +70,7 @@ public class LoopThread extends Thread{
 	                frameCounter=0;
 	                totalTime=0;
 	                ///uncomment to print the average fps
-	                 //System.out.println("FPS: "+averageFps);
+	                // System.out.println("FPS: "+averageFps);
 	            }
 
 	        }
