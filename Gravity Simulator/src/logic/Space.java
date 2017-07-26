@@ -74,14 +74,14 @@ public Space(){
 		
   }
 }
-	particles.addElement(new Particle(180,-5000,0,100,300));
+	particles.addElement(new Particle(180,-2000,0,100,300));
+	
 	
 	g=60;
 	
 }
 
 public void update(double t){
-	
 	
 	for(int i =0;i< particles.size();i++){
 		particles.get(i).accX=0;

@@ -34,7 +34,7 @@ public class GraphicInterface{
 	public GraphicInterface() {
 		initialize();
 	}
-
+	
 	/**
 	 * Initialize the contents of the frame.
 	 */
