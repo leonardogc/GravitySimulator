@@ -150,8 +150,10 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		double vectorX=deltaX/vectorSize;
 		double vectorY=deltaY/vectorSize;
 		
-		space.particles.get(0).velX=vectorX*Math.sqrt(Math.pow(space.particles.get(0).velX,2)+Math.pow(space.particles.get(0).velY,2));
-		space.particles.get(0).velY=vectorY*Math.sqrt(Math.pow(space.particles.get(0).velX,2)+Math.pow(space.particles.get(0).velY,2));
+		double speed=Math.sqrt(Math.pow(space.particles.get(0).velX,2)+Math.pow(space.particles.get(0).velY,2));
+		
+		space.particles.get(0).velX=vectorX*speed;
+		space.particles.get(0).velY=vectorY*speed;
 		}
 	}
 
