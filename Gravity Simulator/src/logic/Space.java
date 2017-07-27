@@ -7,8 +7,8 @@ public class Space {
 	
 public Vector<Particle> particles;
 public double g=60;
-public double coefficientOfFriction=0.5; //0.005 - 0.015
-public double coefficientOfRestitution=0.8; //0.6 - 0.9
+public double coefficientOfFriction=0; //0.5
+public double coefficientOfRestitution=1; //0.8
 public int type;
 
 public int[] screen_edges;
@@ -124,27 +124,27 @@ public Space(int type){
 	else if(type==4){
 		screen_edges=new int[]{0,0,1184,662};
 		
-		particles.add(new Particle(1000,330,-1000,0,1,30));
+		particles.add(new Particle(1000,327,-1000,0,1,30));
 		
-		particles.add(new Particle(150,270,0,0,1,30));
-		particles.add(new Particle(150,300,0,0,1,30));
-		particles.add(new Particle(150,330,0,0,1,30));
-		particles.add(new Particle(150,360,0,0,1,30));
-		particles.add(new Particle(150,390,0,0,1,30));
+		particles.add(new Particle(149,268,0,0,1,30));
+		particles.add(new Particle(149,299,0,0,1,30));
+		particles.add(new Particle(149,330,0,0,1,30));
+		particles.add(new Particle(149,361,0,0,1,30));
+		particles.add(new Particle(149,392,0,0,1,30));
 		
-		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,285,0,0,1,30));
-		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,315,0,0,1,30));
-		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,345,0,0,1,30));
-		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,375,0,0,1,30));
+		particles.add(new Particle(150+1+Math.sin(Math.PI/3)*30,284,0,0,1,30));
+		particles.add(new Particle(150+1+Math.sin(Math.PI/3)*30,315,0,0,1,30));
+		particles.add(new Particle(150+1+Math.sin(Math.PI/3)*30,346,0,0,1,30));
+		particles.add(new Particle(150+1+Math.sin(Math.PI/3)*30,376,0,0,1,30));
 		
-		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,300,0,0,1,30));
-		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,330,0,0,1,30));
-		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,360,0,0,1,30));
+		particles.add(new Particle(150+2+2*Math.sin(Math.PI/3)*30,299,0,0,1,30));
+		particles.add(new Particle(150+2+2*Math.sin(Math.PI/3)*30,330,0,0,1,30));
+		particles.add(new Particle(150+2+2*Math.sin(Math.PI/3)*30,361,0,0,1,30));
 		
-		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,315,0,0,1,30));
-		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,345,0,0,1,30));
+		particles.add(new Particle(150+3+3*Math.sin(Math.PI/3)*30,315,0,0,1,30));
+		particles.add(new Particle(150+3+3*Math.sin(Math.PI/3)*30,346,0,0,1,30));
 		
-		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));
+		particles.add(new Particle(150+4+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));
 	}
 }
 
