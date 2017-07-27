@@ -38,7 +38,7 @@ public Space(int type){
 	particles.add(new Particle(300,300,100,0,48000,20));
 	particles.add(new Particle(0,300,0,100,48000,20));*/
 	
-	
+		
 //	for(int i=0;i<50;i++){
 //		for(int i2=0;i2<100;i2++){
 ////		    vx=Math.abs(r.nextInt(161)-80);
@@ -167,6 +167,7 @@ public Space(int type){
 		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,345,0,0,1,30));
 		
 		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));
+		
 	}
 }
 
@@ -502,6 +503,14 @@ public void update_collisions_V3andV4(){
 			}
 		}
 	}
+	
+	/*double ke=0;
+	
+	for(int i=0;i< particles.size();i++){
+		ke=ke+((Math.pow(particles.get(i).velX, 2)+Math.pow(particles.get(i).velY, 2))*0.5*particles.get(i).mass);
+	}
+	
+	System.out.println("kinetic energy: "+ke);*/
 	}
 
 
