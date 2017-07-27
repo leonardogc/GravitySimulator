@@ -7,6 +7,8 @@ public class Space {
 	
 public Vector<Particle> particles;
 public double g=60;
+public double coefficientOfFriction=0.5; //0.005 - 0.015
+public double coefficientOfRestitution=0.8; //0.6 - 0.9
 public int type;
 
 public int[] screen_edges;
@@ -122,34 +124,49 @@ public Space(int type){
 	else if(type==4){
 		screen_edges=new int[]{0,0,1184,662};
 		
-		for(int i=0;i<10;i++){
-			for(int i2=0;i2<10;i2++){
-				vx=r.nextInt(61)-30;
-				vy=r.nextInt(61)-30;
-				m=(double)(r.nextInt(100)+1);
-				
-			particles.addElement(new Particle(10+i2*40,10+i*40,vx,vy,m));
-				
-		  }
-		}
+		particles.add(new Particle(1000,330,-1000,0,1,30));
+		
+		particles.add(new Particle(150,270,0,0,1,30));
+		particles.add(new Particle(150,300,0,0,1,30));
+		particles.add(new Particle(150,330,0,0,1,30));
+		particles.add(new Particle(150,360,0,0,1,30));
+		particles.add(new Particle(150,390,0,0,1,30));
+		
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,285,0,0,1,30));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,315,0,0,1,30));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,345,0,0,1,30));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,375,0,0,1,30));
+		
+		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,300,0,0,1,30));
+		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,330,0,0,1,30));
+		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,360,0,0,1,30));
+		
+		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,315,0,0,1,30));
+		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,345,0,0,1,30));
+		
+		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));
 	}
 }
 
 public void update(double t){
 
-	if(type!=4){
-		for(int i =0;i< particles.size();i++){
-			particles.get(i).accX=0;
-			particles.get(i).accY=0;
-		}
-
-
-		for(int i =0;i< particles.size();i++){
-			for(int i2=i+1;i2<particles.size();i2++){	
-				updateAcceleration(particles.get(i),particles.get(i2));
+		if(type!=4){			
+			for(int i =0;i< particles.size();i++){
+				particles.get(i).accX=0;
+				particles.get(i).accY=0;
+			}
+			
+			
+			for(int i =0;i< particles.size();i++){
+				for(int i2=i+1;i2<particles.size();i2++){	
+					updateAcceleration(particles.get(i),particles.get(i2));
+				}
 			}
 		}
-	}
+		else if(type==4){
+			updatePoolAcceleration();
+		}
+		
 
 	for(int i =0;i< particles.size();i++){
 		particles.get(i).updateVelocityAndPosition(t);
@@ -541,15 +558,27 @@ public void update_collisions_v4(){
 		
 		if(particles.get(i).posX<=screen_edges[0]+particles.get(i).diameter/2 && particles.get(i).velX<0){
 			particles.get(i).velX=-particles.get(i).velX;
+			
+			particles.get(i).velX=particles.get(i).velX*coefficientOfRestitution;
+			particles.get(i).velY=particles.get(i).velY*coefficientOfRestitution;
 		}
 		else if(particles.get(i).posY<=screen_edges[1]+particles.get(i).diameter/2 && particles.get(i).velY<0){
 			particles.get(i).velY=-particles.get(i).velY;
+			
+			particles.get(i).velX=particles.get(i).velX*coefficientOfRestitution;
+			particles.get(i).velY=particles.get(i).velY*coefficientOfRestitution;
 		}
 		else if(particles.get(i).posX>=screen_edges[2]-particles.get(i).diameter/2 && particles.get(i).velX>0){
 			particles.get(i).velX=-particles.get(i).velX;
+			
+			particles.get(i).velX=particles.get(i).velX*coefficientOfRestitution;
+			particles.get(i).velY=particles.get(i).velY*coefficientOfRestitution;
 		}
 		else if(particles.get(i).posY>=screen_edges[3]-particles.get(i).diameter/2 && particles.get(i).velY>0){
 			particles.get(i).velY=-particles.get(i).velY;
+			
+			particles.get(i).velX=particles.get(i).velX*coefficientOfRestitution;
+			particles.get(i).velY=particles.get(i).velY*coefficientOfRestitution;
 		}
 	}
 	
@@ -572,4 +601,21 @@ public void updateAcceleration(Particle p1, Particle p2){
 	p1.accX=p1.accX+(g*p2.mass*dxP1)/denominator;
 	p1.accY=p1.accY+(g*p2.mass*dyP1)/denominator;
 }
+
+public void updatePoolAcceleration(){
+	double vectorSize;
+	
+	for(int i =0;i<particles.size();i++){
+		vectorSize=Math.sqrt(Math.pow(particles.get(i).velX,2)+Math.pow(particles.get(i).velY,2));
+		if(vectorSize>0){
+		particles.get(i).accX=(-particles.get(i).velX/vectorSize)*9.8*coefficientOfFriction;
+		particles.get(i).accY=(-particles.get(i).velY/vectorSize)*9.8*coefficientOfFriction;
+		}
+		else{
+			particles.get(i).accX=0;
+			particles.get(i).accY=0;
+		}
+	}
+}
+
 }

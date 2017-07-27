@@ -82,6 +82,11 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			playing=true; 
 			}
 		break;  
+		case KeyEvent.VK_LEFT:
+			playing=false;
+			space=new Space(space.type);
+			repaint();
+			break;
 		}
 		
 	}
@@ -136,6 +141,18 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		dy=dy+(arg0.getY()-y);
 		if(!playing){
 			repaint();
+		}
+		
+		if(!playing && space.type==4){
+		double deltaX=(arg0.getX()-dx)-space.particles.get(0).posX;
+		double deltaY=(arg0.getY()-dy)-space.particles.get(0).posY;
+		double vectorSize=Math.sqrt(Math.pow(deltaX,2)+Math.pow(deltaY,2));
+		
+		double vectorX=deltaX/vectorSize;
+		double vectorY=deltaY/vectorSize;
+		
+		space.particles.get(0).velX=vectorX*Math.sqrt(Math.pow(space.particles.get(0).velX,2)+Math.pow(space.particles.get(0).velY,2));
+		space.particles.get(0).velY=vectorY*Math.sqrt(Math.pow(space.particles.get(0).velX,2)+Math.pow(space.particles.get(0).velY,2));
 		}
 	}
 
