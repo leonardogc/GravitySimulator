@@ -3,6 +3,7 @@ package logic;
 import java.util.Random;
 import java.util.Vector;
 
+
 public class Space {
 	
 public Vector<Particle> particles;
