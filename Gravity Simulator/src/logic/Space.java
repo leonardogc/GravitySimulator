@@ -6,7 +6,7 @@ import java.util.Vector;
 public class Space {
 	
 public Vector<Particle> particles;
-public double g=60;
+public double g=66;
 public double coefficientOfFriction=0; //0.5
 public double coefficientOfRestitution=1; //0.8
 public int type;
