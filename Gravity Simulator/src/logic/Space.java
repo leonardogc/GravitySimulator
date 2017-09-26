@@ -33,7 +33,7 @@ public Space(int type){
 		
 	/*particles.add(new Particle(0,0,0,0,120000,10));
 	particles.add(new Particle(500,0,0,120,120,10));
-	particles.add(new Particle(515,0,0,142,0.000012,10));*/
+	particles.add(new Particle(516,0,0,141.14,0.000012,10));*/
 	
 		
 	//four particles (interesting)
