@@ -41,6 +41,10 @@ public Space(int type){
 	particles.add(new Particle(300,0,0,-100,48000,20));
 	particles.add(new Particle(300,300,100,0,48000,20));
 	particles.add(new Particle(0,300,0,100,48000,20));*/
+		
+		
+	/*particles.add(new Particle(0,0,0,74,50000,30));
+	particles.add(new Particle(300,0,0,-74,50000,30));*/
 	
 		
 	for(int i=0;i<50;i++){
