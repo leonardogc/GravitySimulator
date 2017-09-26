@@ -27,13 +27,13 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	private int dx;
 	private int dy;
 	private LoopThread thread;
-	int pictureNumber;
+	int pictureNumber; //only used for taking pictures
 	
 	public GraphicsAndListeners(GraphicInterface g){
 		addKeyListener(this);
 		addMouseListener(this);
 		
-		space=new Space(3);
+		space=new Space(4);  //1 for gravity and merging, 2 for gravity without merging (kinda lame), 3 for gravity and acting like pool balls, 4 for pool balls 
 		this.graphics=g;
 		
 		playing=false;

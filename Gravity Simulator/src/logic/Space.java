@@ -21,52 +21,55 @@ public Space(int type){
 	this.type=type;
 	
 	Random r=new Random();
-	int vx;//[-80,80]
+	int vx;//[-80,80] used in simulation
 	int vy;
-	double m;//[0.1,10]
+	double m;//[0.1,10] used in simulation
 	
 	particles=new Vector<Particle>();
 	
-	if(type!=4){
-	
+	if(type==1){
+	//solar system
+		
 	/*particles.add(new Particle(0,0,0,0,120000,10));
 	particles.add(new Particle(500,0,0,120,120,10));
 	particles.add(new Particle(515,0,0,142,0.000012,10));*/
 	
+		
+	//four particles (interesting)
 	/*particles.add(new Particle(0,0,-100,0,48000,20));
 	particles.add(new Particle(300,0,0,-100,48000,20));
 	particles.add(new Particle(300,300,100,0,48000,20));
 	particles.add(new Particle(0,300,0,100,48000,20));*/
 	
 		
-//	for(int i=0;i<50;i++){
-//		for(int i2=0;i2<100;i2++){
-////		    vx=Math.abs(r.nextInt(161)-80);
-////			vy=Math.abs(r.nextInt(161)-80);
-//			vx=r.nextInt(161)-80;
-//			vy=r.nextInt(161)-80;
-//			m=(double)(r.nextInt(100)+1)/10;
-//			
-//			/*if(i<=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
-//			vx=vx*-1;
-//			vy=0;
-//			}else if(i<=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
-//				vy=vy*-1;
-//				vx=0;
-//			}
-//             else if(i>=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
-//				vy=0;
-//			}
-//              else if(i>=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
-//            	vx=0;
-//              }*/
-//             
-//			
-//		particles.addElement(new Particle(i2*10,i*10,vx,vy,m));
-//			
-//	  }
-//	}
-//	
+	for(int i=0;i<50;i++){
+		for(int i2=0;i2<100;i2++){
+//		    vx=Math.abs(r.nextInt(161)-80);
+//			vy=Math.abs(r.nextInt(161)-80);
+			vx=r.nextInt(161)-80;
+			vy=r.nextInt(161)-80;
+			m=(double)(r.nextInt(100)+1)/10;
+			
+			/*if(i<=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
+			vx=vx*-1;
+			vy=0;
+			}else if(i<=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
+				vy=vy*-1;
+				vx=0;
+			}
+             else if(i>=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
+				vy=0;
+			}
+              else if(i>=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
+            	vx=0;
+              }*/
+             
+			
+		particles.addElement(new Particle(i2*10,i*10,vx,vy,m));
+			
+	  }
+	}
+	
 	
 	
 //	for(int i=0;i<10;i++){
@@ -84,42 +87,45 @@ public Space(int type){
 //  }
 //}
 	
-	for(int i=0;i<10;i++){
-		for(int i2=0;i2<5;i2++){
-			vx=r.nextInt(21)-10;
-			vy=r.nextInt(21)-10;
-			m=(double)(r.nextInt(100)+1)/10;
-			
-			vx=0;
-			vy=0;
-			m=30;
-		
-		particles.addElement(new Particle(i2*40-70,i*40,vx,vy,m));
-			
-	  }
 	}
-	
-	
-	for(int i=0;i<10;i++){
-		for(int i2=5;i2<10;i2++){
-			vx=r.nextInt(21)-10;
-			vy=r.nextInt(21)-10;
-			m=(double)(r.nextInt(100)+1)/10;
-			
-			vx=0;
-			vy=0;
-			m=30;
+	else if(type==2 || type==3) {
 		
-		particles.addElement(new Particle(70+i2*40,i*40,vx,vy,m));
+		for(int i=0;i<10;i++){
+			for(int i2=0;i2<5;i2++){
+				vx=r.nextInt(21)-10;
+				vy=r.nextInt(21)-10;
+				m=(double)(r.nextInt(100)+1)/10;
+				
+				vx=0;
+				vy=0;
+				m=30;
 			
-	  }
-	}
-	
-	particles.addElement(new Particle(180,-4500,0,300,100));
-	particles.addElement(new Particle(180,4860,0,-300,100));
-	particles.addElement(new Particle(4930,180,-300,0,100));
-	particles.addElement(new Particle(-4570,180,300,0,100));
-	
+			particles.addElement(new Particle(i2*40-70,i*40,vx,vy,m));
+				
+		  }
+		}
+		
+		
+		for(int i=0;i<10;i++){
+			for(int i2=5;i2<10;i2++){
+				vx=r.nextInt(21)-10;
+				vy=r.nextInt(21)-10;
+				m=(double)(r.nextInt(100)+1)/10;
+				
+				vx=0;
+				vy=0;
+				m=30;
+			
+			particles.addElement(new Particle(70+i2*40,i*40,vx,vy,m));
+				
+		  }
+		}
+		
+		particles.addElement(new Particle(180,-4500,0,300,100));
+		particles.addElement(new Particle(180,4860,0,-300,100));
+		particles.addElement(new Particle(4930,180,-300,0,100));
+		particles.addElement(new Particle(-4570,180,300,0,100));
+		
 	}
 	else if(type==4){
 		screen_edges=new int[]{0,0,1184,662};
@@ -192,7 +198,8 @@ public void update(double t){
 		
 
 	for(int i =0;i< particles.size();i++){
-		particles.get(i).updateVelocityAndPosition(t);
+		particles.get(i).updateVel(t);
+		particles.get(i).updatePos(t);
 	}
 	
 	if(type==1){
@@ -304,11 +311,11 @@ public void update_collisions_v2(){
 						r=Math.sqrt(dx*dx+dy*dy);
 						targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
 						
-					if(r<targetDistance-1){
+					if(r<targetDistance-1){  //it has -1 to make sure that they are really touching
 					found=true;
 					mass=particles.get(i).mass+particles.get(i2).mass;
 					
-					x=(targetDistance-r)*Math.abs(dx)/r;
+					x=(targetDistance-r)*Math.abs(dx)/r;  // calculates the distance that they have to move so that they no longer touch each other
 					y=(targetDistance-r)*Math.abs(dy)/r;
 					
 					if(dx<0){
@@ -474,6 +481,7 @@ public void update_collisions_V3andV4(){
 	  }
 	
 	
+	
 	if(type==4){
 		for(int i=0;i< particles.size();i++){
 			
@@ -504,13 +512,6 @@ public void update_collisions_V3andV4(){
 		}
 	}
 	
-	/*double ke=0;
-	
-	for(int i=0;i< particles.size();i++){
-		ke=ke+((Math.pow(particles.get(i).velX, 2)+Math.pow(particles.get(i).velY, 2))*0.5*particles.get(i).mass);
-	}
-	
-	System.out.println("kinetic energy: "+ke);*/
 	}
 
 

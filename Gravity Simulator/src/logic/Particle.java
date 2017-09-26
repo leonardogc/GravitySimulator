@@ -10,6 +10,7 @@ public class Particle {
 	public double mass;
 	public boolean selected;
 	public double diameter;
+	public double scale=3.2;
 	
 	
 	
@@ -23,7 +24,7 @@ public class Particle {
 		this.mass=mass;
 		this.selected=false;
 		
-		diameter=2*Math.pow(mass/4, (double)1/3)*3.2;
+		diameter=2*Math.pow(mass/4, (double)1/3)*scale;
 		
 		if(diameter>60){
 			diameter=60;
@@ -40,12 +41,6 @@ public class Particle {
 		this.mass=mass;
 		this.selected=false;
 		this.diameter=diameter;
-	}
-	
-	
-	public void updateVelocityAndPosition(double t){
-		updateVel(t);
-		updatePos(t);
 	}
 	
 	
