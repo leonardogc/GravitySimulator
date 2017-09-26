@@ -33,7 +33,7 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		addKeyListener(this);
 		addMouseListener(this);
 		
-		space=new Space(1);  //1 for gravity and merging, 2 for gravity without merging (kinda lame), 3 for gravity and acting like pool balls, 4 for pool balls 
+		space=new Space(3);  //1 for gravity and merging, 2 for gravity without merging (kinda lame), 3 for gravity and acting like pool balls, 4 for pool balls 
 		this.graphics=g;
 		
 		playing=false;
