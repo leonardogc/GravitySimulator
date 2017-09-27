@@ -179,6 +179,14 @@ public Space(int type){
 		
 		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));
 		
+	     /* for(int i=0; i<10;i++) {
+			for(int i2=0; i2<10;i2++) {
+					particles.add(new Particle(200+30*i2,200+30*i,r.nextInt(201)-100,r.nextInt(201)-100,1,30));
+			}
+		}*/
+		
+		/*particles.add(new Particle(200,200,100,0,1,30));
+		particles.add(new Particle(300,200,100,0,1,30));*/
 	}
 }
 
@@ -516,6 +524,16 @@ public void update_collisions_V3andV4(){
 			}
 		}
 	}
+	
+	/*double momentumX=0;
+	double momentumY=0;
+	
+	for(int i=0;i< particles.size();i++) {
+	momentumX = momentumX + (particles.get(i).velX * particles.get(i).mass);
+	momentumY = momentumY + (particles.get(i).velY * particles.get(i).mass);
+	}
+	
+	System.out.println("Total Momentum X: "+momentumX+"\nTotal Momentum Y: "+momentumY);*/
 	
 	}
 
