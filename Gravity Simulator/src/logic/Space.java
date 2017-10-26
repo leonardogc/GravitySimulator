@@ -7,6 +7,11 @@ import java.util.Vector;
 public class Space {
 	
 public Vector<Particle> particles;
+public Vector<Particle> particles_1;
+public Vector<Particle> particles_2;
+public Vector<Particle> particles_3;
+public Vector<Particle> particles_4;
+
 public double g=66;
 public double coefficientOfFriction=0; //0.5
 public double coefficientOfRestitution=1; //0.8
@@ -27,6 +32,11 @@ public Space(int type){
 	double m;//[0.1,10] used in simulation
 	
 	particles=new Vector<Particle>();
+	
+	particles_1=new Vector<Particle>();
+	particles_2=new Vector<Particle>();
+	particles_3=new Vector<Particle>();
+	particles_4=new Vector<Particle>();
 	
 	if(type==1){
 	//solar system
@@ -217,7 +227,8 @@ public void update(double t){
 	}
 	
 	if(type==1){
-		update_collisions();
+		//update_collisions();
+		update_collisions_with_thread();
 	}else if(type==2){
 		update_collisions_v2();
 	}
@@ -293,6 +304,151 @@ public void update_collisions(){
 				for(int i=0;i<newParticles.size();i++){
 					particles.add(newParticles.get(i));	
 				}
+			}
+	  }
+	}
+
+public void update_collisions_with_thread(){
+	double dx;
+	double dy;
+	double ax=0;
+	double ay=0;
+	double r;
+	double mass;
+	double velX;
+	double velY;
+	double posX;
+	double posY;
+	int current;
+	boolean found=true;
+	
+	Vector<Particle> newParticles=new Vector<Particle>();
+	
+	for(int i=0 ; i<particles.size(); i++) {
+		ax=ax+particles.get(i).posX;
+		ay=ay+particles.get(i).posY;
+	}
+	
+	ax=ax/particles.size();
+	ay=ay/particles.size();
+	
+	
+	particles_1.clear();
+	particles_2.clear();
+	particles_3.clear();
+	particles_4.clear();
+	
+	for(int i=0 ; i < particles.size(); i++) {
+		if(particles.get(i).posX <= ax && particles.get(i).posY <= ay) {
+			particles_1.add(particles.get(i));
+		}
+		else if(particles.get(i).posX <= ax && particles.get(i).posY > ay) {
+			particles_2.add(particles.get(i));
+		}
+		else if(particles.get(i).posX > ax && particles.get(i).posY <= ay) {
+			particles_3.add(particles.get(i));
+		}
+		else if(particles.get(i).posX > ax && particles.get(i).posY > ay) {
+			particles_4.add(particles.get(i));
+		}
+	}
+	
+	CollisionThread t1 = new CollisionThread(particles_1);
+	CollisionThread t2 = new CollisionThread(particles_2);
+	CollisionThread t3 = new CollisionThread(particles_3);
+	CollisionThread t4 = new CollisionThread(particles_4);
+	
+	t1.start();
+	t2.start();
+	t3.start();
+	t4.start();
+	
+	try {
+		t1.join();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	try {
+		t2.join();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	try {
+		t3.join();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	try {
+		t4.join();
+	} catch (InterruptedException e) {
+		// TODO Auto-generated catch block
+		e.printStackTrace();
+	}
+	
+	particles.clear();
+	
+	particles.addAll(t1.particles);
+	particles.addAll(t2.particles);
+	particles.addAll(t3.particles);
+	particles.addAll(t4.particles);
+	
+	
+	while(found){
+			
+			newParticles.clear();
+			
+			found=false;
+			
+			for(int i =0;i< particles.size();i++){
+				for(int i2=i+1;i2<particles.size();i2++){	
+					
+					if(!particles.get(i).selected && !particles.get(i2).selected){
+						
+						dx=particles.get(i).posX-particles.get(i2).posX;
+						dy=particles.get(i).posY-particles.get(i2).posY;
+						r=Math.sqrt(dx*dx+dy*dy);
+						
+					if(r<(particles.get(i).diameter/2)+(particles.get(i2).diameter/2)){
+					found=true;
+					
+					mass=particles.get(i).mass+particles.get(i2).mass;
+					posX=(particles.get(i).posX*(particles.get(i).mass/mass))+(particles.get(i2).posX*(particles.get(i2).mass/mass));
+					posY=(particles.get(i).posY*(particles.get(i).mass/mass))+(particles.get(i2).posY*(particles.get(i2).mass/mass));
+					velX=((particles.get(i).mass*particles.get(i).velX)+(particles.get(i2).mass*particles.get(i2).velX))/mass;
+					velY=((particles.get(i).mass*particles.get(i).velY)+(particles.get(i2).mass*particles.get(i2).velY))/mass;
+					
+					newParticles.add(new Particle(posX,posY,velX,velY,mass));
+					
+					particles.get(i).selected=true;
+					particles.get(i2).selected=true;
+					
+					}
+				}		
+			}
+		}
+	
+		if(found){
+			
+			current=0;
+			
+			while(current!=particles.size()){
+				
+				if(particles.get(current).selected){
+					particles.remove(current);
+				}
+				else{
+					current++;
+				}
+			
+			}
+				
+				particles.addAll(newParticles);
 			}
 	  }
 	}
