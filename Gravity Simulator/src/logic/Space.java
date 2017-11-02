@@ -11,6 +11,8 @@ public Vector<Particle> particles_1;
 public Vector<Particle> particles_2;
 public Vector<Particle> particles_3;
 public Vector<Particle> particles_4;
+public Vector<Vector<Particle>> particle_vector;
+public Vector<CollisionThread> collision_threads;
 
 public double g=66;
 public double coefficientOfFriction=0; //0.5
@@ -37,6 +39,14 @@ public Space(int type){
 	particles_2=new Vector<Particle>();
 	particles_3=new Vector<Particle>();
 	particles_4=new Vector<Particle>();
+	
+	particle_vector = new Vector<Vector<Particle>>();
+	
+	collision_threads = new Vector<CollisionThread>();
+	
+	for(int i = 0; i < 16; i++) {
+		particle_vector.add(new Vector<Particle>());
+	}
 	
 	if(type==1){
 	//solar system
@@ -227,8 +237,12 @@ public void update(double t){
 	}
 	
 	if(type==1){
-		//update_collisions();
+		if(particles.size() < 100) {
+		update_collisions();
+		}
+		else {
 		update_collisions_with_thread();
+		}
 	}else if(type==2){
 		update_collisions_v2();
 	}
@@ -313,6 +327,14 @@ public void update_collisions_with_thread(){
 	double dy;
 	double ax=0;
 	double ay=0;
+	double ax2=0;
+	double ay2=0;
+	double ax3=0;
+	double ay3=0;
+	double ax4=0;
+	double ay4=0;
+	double ax5=0;
+	double ay5=0;
 	double r;
 	double mass;
 	double velX;
@@ -331,7 +353,6 @@ public void update_collisions_with_thread(){
 	
 	ax=ax/particles.size();
 	ay=ay/particles.size();
-	
 	
 	particles_1.clear();
 	particles_2.clear();
@@ -352,6 +373,132 @@ public void update_collisions_with_thread(){
 			particles_4.add(particles.get(i));
 		}
 	}
+	
+	if(particles.size() > 600) {
+		
+		for(int i=0 ; i < particles_1.size(); i++) {
+			ax2=ax2+particles_1.get(i).posX;
+			ay2=ay2+particles_1.get(i).posY;
+		}
+		
+		ax2=ax2/particles_1.size();
+		ay2=ay2/particles_1.size();
+		
+		for(int i=0 ; i < particles_2.size(); i++) {
+			ax3=ax3+particles_2.get(i).posX;
+			ay3=ay3+particles_2.get(i).posY;
+		}
+		
+		ax3=ax3/particles_2.size();
+		ay3=ay3/particles_2.size();
+		
+		for(int i=0 ; i < particles_3.size(); i++) {
+			ax4=ax4+particles_3.get(i).posX;
+			ay4=ay4+particles_3.get(i).posY;
+		}
+		
+		ax4=ax4/particles_3.size();
+		ay4=ay4/particles_3.size();
+		
+		for(int i=0 ; i < particles_4.size(); i++) {
+			ax5=ax5+particles_4.get(i).posX;
+			ay5=ay5+particles_4.get(i).posY;
+		}
+		
+		ax5=ax5/particles_4.size();
+		ay5=ay5/particles_4.size();
+		
+		for(int i=0; i< particle_vector.size();i++) {
+			particle_vector.get(i).clear();
+		}
+		
+		for(int i=0 ; i < particles_1.size(); i++) {
+			if(particles_1.get(i).posX <= ax2 && particles_1.get(i).posY <= ay2) {
+				particle_vector.get(0).add(particles_1.get(i));
+			}
+			else if(particles_1.get(i).posX <= ax2 && particles_1.get(i).posY > ay2) {
+				particle_vector.get(1).add(particles_1.get(i));
+			}
+			else if(particles_1.get(i).posX > ax2 && particles_1.get(i).posY <= ay2) {
+				particle_vector.get(2).add(particles_1.get(i));
+			}
+			else if(particles_1.get(i).posX > ax2 && particles_1.get(i).posY > ay2) {
+				particle_vector.get(3).add(particles_1.get(i));
+			}
+		}
+		
+		for(int i=0 ; i < particles_2.size(); i++) {
+			if(particles_2.get(i).posX <= ax3 && particles_2.get(i).posY <= ay3) {
+				particle_vector.get(4).add(particles_2.get(i));
+			}
+			else if(particles_2.get(i).posX <= ax3 && particles_2.get(i).posY > ay3) {
+				particle_vector.get(5).add(particles_2.get(i));
+			}
+			else if(particles_2.get(i).posX > ax3 && particles_2.get(i).posY <= ay3) {
+				particle_vector.get(6).add(particles_2.get(i));
+			}
+			else if(particles_2.get(i).posX > ax3 && particles_2.get(i).posY > ay3) {
+				particle_vector.get(7).add(particles_2.get(i));
+			}
+		}
+		
+		for(int i=0 ; i < particles_3.size(); i++) {
+			if(particles_3.get(i).posX <= ax4 && particles_3.get(i).posY <= ay4) {
+				particle_vector.get(8).add(particles_3.get(i));
+			}
+			else if(particles_3.get(i).posX <= ax4 && particles_3.get(i).posY > ay4) {
+				particle_vector.get(9).add(particles_3.get(i));
+			}
+			else if(particles_3.get(i).posX > ax4 && particles_3.get(i).posY <= ay4) {
+				particle_vector.get(10).add(particles_3.get(i));
+			}
+			else if(particles_3.get(i).posX > ax4 && particles_3.get(i).posY > ay4) {
+				particle_vector.get(11).add(particles_3.get(i));
+			}
+		}
+		
+		for(int i=0 ; i < particles_4.size(); i++) {
+			if(particles_4.get(i).posX <= ax5 && particles_4.get(i).posY <= ay5) {
+				particle_vector.get(12).add(particles_4.get(i));
+			}
+			else if(particles_4.get(i).posX <= ax5 && particles_4.get(i).posY > ay5) {
+				particle_vector.get(13).add(particles_4.get(i));
+			}
+			else if(particles_4.get(i).posX > ax5 && particles_4.get(i).posY <= ay5) {
+				particle_vector.get(14).add(particles_4.get(i));
+			}
+			else if(particles_4.get(i).posX > ax5 && particles_4.get(i).posY > ay5) {
+				particle_vector.get(15).add(particles_4.get(i));
+			}
+		}
+		
+		collision_threads.clear();
+		
+		for(int i=0; i < particle_vector.size();i++) {
+			collision_threads.add(new CollisionThread(particle_vector.get(i)));
+		}
+		
+		for(int i=0; i < collision_threads.size();i++) {
+			collision_threads.get(i).start();
+		}
+		
+		for(int i = 0; i< collision_threads.size();i++) {
+			try {
+				collision_threads.get(i).join();
+			} catch (InterruptedException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		}
+		
+		particles.clear();
+		
+		for(int i=0; i < collision_threads.size();i++) {
+			particles.addAll(collision_threads.get(i).particles);
+		}
+		
+	}
+	else {
 	
 	CollisionThread t1 = new CollisionThread(particles_1);
 	CollisionThread t2 = new CollisionThread(particles_2);
@@ -397,6 +544,8 @@ public void update_collisions_with_thread(){
 	particles.addAll(t2.particles);
 	particles.addAll(t3.particles);
 	particles.addAll(t4.particles);
+	
+	}
 	
 	
 	while(found){
