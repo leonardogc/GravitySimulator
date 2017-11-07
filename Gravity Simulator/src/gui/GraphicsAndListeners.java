@@ -26,6 +26,7 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	private int y;
 	private int dx;
 	private int dy;
+	private double scaleFactor;
 	private LoopThread thread;
 	int pictureNumber; //only used for taking pictures
 	
@@ -41,6 +42,8 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		dx=0;
 		dy=0;
 		
+		scaleFactor=1;
+		
 		pictureNumber=1;
 		
 		thread=new LoopThread(this);
@@ -53,8 +56,6 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	@Override
 	protected void paintComponent(Graphics g) {
 	 super.paintComponent(g);
-	 
-	 double scaleFactor=1;
 	
 	for(int i=0;i<space.particles.size();i++){
 	 g.fillOval((int)((space.particles.get(i).posX-space.particles.get(i).diameter/2)*scaleFactor+dx),
@@ -86,6 +87,18 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			playing=false;
 			space=new Space(space.type);
 			repaint();
+			break;
+		case KeyEvent.VK_UP:
+			scaleFactor+=0.1;
+			if(!playing){
+			repaint();
+			}
+			break;
+		case KeyEvent.VK_DOWN:
+			scaleFactor-=0.1;
+			if(!playing){
+			repaint();
+			}
 			break;
 		}
 		
