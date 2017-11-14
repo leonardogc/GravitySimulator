@@ -158,10 +158,10 @@ public Space(int type){
 		  }
 		}
 		
-		particles.addElement(new Particle(180,-4500,0,300,100));
+		/*particles.addElement(new Particle(180,-4500,0,300,100));
 		particles.addElement(new Particle(180,4860,0,-300,100));
 		particles.addElement(new Particle(4930,180,-300,0,100));
-		particles.addElement(new Particle(-4570,180,300,0,100));
+		particles.addElement(new Particle(-4570,180,300,0,100));*/
 		
 	}
 	else if(type==4){
@@ -575,7 +575,7 @@ public void update_collisions_with_thread(){
 						dy=particles.get(i).posY-particles.get(i2).posY;
 						r=Math.sqrt(dx*dx+dy*dy);
 						
-					if(r<(particles.get(i).diameter/2)+(particles.get(i2).diameter/2)){
+					if(r<((particles.get(i).diameter/2)+(particles.get(i2).diameter/2))){
 					found=true;
 					
 					mass=particles.get(i).mass+particles.get(i2).mass;
@@ -625,6 +625,7 @@ public void update_collisions_v2(){
 	double velY;
 	double targetDistance;
 	boolean found=true;
+	double extra = 0.1;
 	
 	
 	while(found){
@@ -642,30 +643,20 @@ public void update_collisions_v2(){
 						r=Math.sqrt(dx*dx+dy*dy);
 						targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
 						
-					if(r<targetDistance-1){  //it has -1 to make sure that they are really touching
+					if(r<targetDistance){ 
 					found=true;
 					mass=particles.get(i).mass+particles.get(i2).mass;
 					
-					x=(targetDistance-r)*Math.abs(dx)/r;  // calculates the distance that they have to move so that they no longer touch each other
-					y=(targetDistance-r)*Math.abs(dy)/r;
 					
-					if(dx<0){
-						particles.get(i).posX=particles.get(i).posX-(particles.get(i).mass/mass)*x;
-						particles.get(i2).posX=particles.get(i2).posX+(particles.get(i2).mass/mass)*x;
-					}
-					else{
-						particles.get(i).posX=particles.get(i).posX+(particles.get(i).mass/mass)*x;
-						particles.get(i2).posX=particles.get(i2).posX-(particles.get(i2).mass/mass)*x;
-					}
+					x=((targetDistance + extra)-r)*dx/r;
+					y=((targetDistance + extra)-r)*dy/r;
 					
-					if(dy<0){
-						particles.get(i).posY=particles.get(i).posY-(particles.get(i).mass/mass)*y;
-						particles.get(i2).posY=particles.get(i2).posY+(particles.get(i2).mass/mass)*y;
-					}
-					else{
-						particles.get(i).posY=particles.get(i).posY+(particles.get(i).mass/mass)*y;
-						particles.get(i2).posY=particles.get(i2).posY-(particles.get(i2).mass/mass)*y;
-					}
+					
+					particles.get(i).posX=particles.get(i).posX+(particles.get(i).mass/mass)*x;
+					particles.get(i2).posX=particles.get(i2).posX-(particles.get(i2).mass/mass)*x;
+					
+					particles.get(i).posY=particles.get(i).posY+(particles.get(i).mass/mass)*y;
+					particles.get(i2).posY=particles.get(i2).posY-(particles.get(i2).mass/mass)*y;
 					
 					
 					velX=((particles.get(i).mass*particles.get(i).velX)+(particles.get(i2).mass*particles.get(i2).velX))/mass;
@@ -711,6 +702,7 @@ public void update_collisions_V3andV4(){
 	boolean found=true;
 	double proportion1=0.5;
 	double proportion2=0.5;
+	double extra = 0.1;
 	
 	
 	while(found){
@@ -728,7 +720,7 @@ public void update_collisions_V3andV4(){
 						r=Math.sqrt(dx*dx+dy*dy);
 						targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
 						
-					if(r<targetDistance-1){
+					if(r<targetDistance){
 					found=true;
 					
 					particles.get(i).selected=true;
@@ -777,26 +769,15 @@ public void update_collisions_V3andV4(){
 					particles.get(i2).velY=v2_ex*ey_1[0]+v2_ey*ey_1[1];
 					
 				
-					x=(targetDistance-r)*Math.abs(dx)/r;
-					y=(targetDistance-r)*Math.abs(dy)/r;
+					x=((targetDistance + extra)-r)*dx/r;
+					y=((targetDistance + extra)-r)*dy/r;
 					
-					if(dx<0){
-						particles.get(i).posX=particles.get(i).posX-proportion1*x;
-						particles.get(i2).posX=particles.get(i2).posX+proportion2*x;
-					}
-					else{
-						particles.get(i).posX=particles.get(i).posX+proportion1*x;
-						particles.get(i2).posX=particles.get(i2).posX-proportion2*x;
-					}
 					
-					if(dy<0){
-						particles.get(i).posY=particles.get(i).posY-proportion1*y;
-						particles.get(i2).posY=particles.get(i2).posY+proportion2*y;
-					}
-					else{
-						particles.get(i).posY=particles.get(i).posY+proportion1*y;
-						particles.get(i2).posY=particles.get(i2).posY-proportion2*y;
-					}
+					particles.get(i).posX=particles.get(i).posX+proportion1*x;
+					particles.get(i2).posX=particles.get(i2).posX-proportion2*x;
+					
+					particles.get(i).posY=particles.get(i).posY+proportion1*y;
+					particles.get(i2).posY=particles.get(i2).posY-proportion2*y;
 					
 					}
 				}		
