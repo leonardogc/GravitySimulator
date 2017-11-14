@@ -11,7 +11,7 @@ public class LoopThread extends Thread{
 
 	public LoopThread(GraphicsAndListeners g){
 		   running=false;
-	       max_fps=120;
+	       max_fps=1200;
 	       numberOfParticles=0;
 	       this.g=g;
 	}
@@ -23,9 +23,11 @@ public class LoopThread extends Thread{
 	    @Override
 	    public void run() {
 	        long startTime;
-	        long frameDurationMicro;
-	        long targetTime=(long)(1000000/max_fps);
+	        long frameDuration;
+	        long targetTime=(long)(1000000000/max_fps);
 	        long waitTime;
+	        long waitTimeMill;
+	        int waitTimeNano;
 	        long totalTime=0;
 	        int frameCounter=0;
 	        double averageFps;
@@ -52,12 +54,14 @@ public class LoopThread extends Thread{
 	        		}
 	        		}
 	          
-	            frameDurationMicro=(System.nanoTime()-startTime)/1000;
-	            waitTime=(targetTime-frameDurationMicro)/1000;
+	            frameDuration=System.nanoTime()-startTime;
+	            waitTime=targetTime-frameDuration;
+	            waitTimeMill = waitTime/1000000;
+	            waitTimeNano = (int)(waitTime - waitTimeMill*1000000);
 
 	            try{
 	                if(waitTime>0){
-	                    this.sleep(waitTime);
+	                    this.sleep(waitTimeMill, waitTimeNano);
 	                }
 	            }catch(Exception e){ e.printStackTrace();}
 
