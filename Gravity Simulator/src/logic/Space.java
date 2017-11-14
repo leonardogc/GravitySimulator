@@ -54,46 +54,58 @@ public Space(int type){
 	/*particles.add(new Particle(0,0,0,0,120000,10));
 	particles.add(new Particle(500,0,0,120,120,10));
 	particles.add(new Particle(516,0,0,141.14,0.000012,10));*/
-	
-		
-	//four particles (interesting)
-	/*particles.add(new Particle(0,0,-100,0,48000,20));
+
+
+		//four particles (interesting)
+		/*particles.add(new Particle(0,0,-100,0,48000,20));
 	particles.add(new Particle(300,0,0,-100,48000,20));
 	particles.add(new Particle(300,300,100,0,48000,20));
 	particles.add(new Particle(0,300,0,100,48000,20));*/
 		
+		double v = 120; //118
+		double a = 45; //45
 		
-	/*particles.add(new Particle(0,0,0,74,50000,30));
+		double v2 = v * Math.cos(a);
+		double v3 = v * Math.sin(a);
+		
+		double ratio = 1.0/3.0;
+
+		particles.add(new Particle(0,0,-v2+v2*ratio,v3-v3*ratio,50000,20));
+		particles.add(new Particle(200,0,v2+v2*ratio,-v3-v3*ratio,50000,20));
+		particles.add(new Particle(400,0,-v2+v2*ratio,v3-v3*ratio,50000,20));
+
+
+		/*particles.add(new Particle(0,0,0,74,50000,30));
 	particles.add(new Particle(300,0,0,-74,50000,30));*/
-	
+
 		
-	for(int i=0;i<50;i++){
-		for(int i2=0;i2<100;i2++){
-//		    vx=Math.abs(r.nextInt(161)-80);
-//			vy=Math.abs(r.nextInt(161)-80);
-			vx=r.nextInt(161)-80;
-			vy=r.nextInt(161)-80;
-			m=(double)(r.nextInt(100)+1)/10;
-			
-			/*if(i<=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
-			vx=vx*-1;
-			vy=0;
-			}else if(i<=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
-				vy=vy*-1;
-				vx=0;
-			}
-             else if(i>=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
-				vy=0;
-			}
-              else if(i>=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
-            	vx=0;
-              }*/
-             
-			
-		particles.addElement(new Particle(i2*10,i*10,vx,vy,m));
-			
-	  }
-	}
+//	for(int i=0;i<50;i++){
+//		for(int i2=0;i2<100;i2++){
+////		    vx=Math.abs(r.nextInt(161)-80);
+////			vy=Math.abs(r.nextInt(161)-80);
+//			vx=r.nextInt(161)-80;
+//			vy=r.nextInt(161)-80;
+//			m=(double)(r.nextInt(100)+1)/10;
+//			
+//			/*if(i<=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
+//			vx=vx*-1;
+//			vy=0;
+//			}else if(i<=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
+//				vy=vy*-1;
+//				vx=0;
+//			}
+//             else if(i>=((double)25/50)*i2 && i>=((double)-25/50)*i2+25){
+//				vy=0;
+//			}
+//              else if(i>=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
+//            	vx=0;
+//              }*/
+//             
+//			
+//		particles.addElement(new Particle(i2*10,i*10,vx,vy,m));
+//			
+//	  }
+//	}
 	
 	
 	
