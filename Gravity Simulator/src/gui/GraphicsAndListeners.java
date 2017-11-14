@@ -89,13 +89,13 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			repaint();
 			break;
 		case KeyEvent.VK_UP:
-			scaleFactor+=0.1;
+			scaleFactor*=1.1;
 			if(!playing){
 			repaint();
 			}
 			break;
 		case KeyEvent.VK_DOWN:
-			scaleFactor-=0.1;
+			scaleFactor/=1.1;
 			if(!playing){
 			repaint();
 			}
