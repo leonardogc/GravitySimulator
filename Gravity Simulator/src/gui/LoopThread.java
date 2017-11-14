@@ -23,8 +23,8 @@ public class LoopThread extends Thread{
 	    @Override
 	    public void run() {
 	        long startTime;
-	        long frameDurationMillis;
-	        long targetTime=(long)(1000/max_fps);
+	        long frameDurationMicro;
+	        long targetTime=(long)(1000000/max_fps);
 	        long waitTime;
 	        long totalTime=0;
 	        int frameCounter=0;
@@ -52,8 +52,8 @@ public class LoopThread extends Thread{
 	        		}
 	        		}
 	          
-	            frameDurationMillis=(System.nanoTime()-startTime)/1000000;
-	            waitTime=targetTime-frameDurationMillis;
+	            frameDurationMicro=(System.nanoTime()-startTime)/1000;
+	            waitTime=(targetTime-frameDurationMicro)/1000;
 
 	            try{
 	                if(waitTime>0){
@@ -70,7 +70,7 @@ public class LoopThread extends Thread{
 	                frameCounter=0;
 	                totalTime=0;
 	                ///uncomment to print the average fps
-	                 //System.out.println("FPS: "+averageFps);
+	                 System.out.println("FPS: "+averageFps);
 	            }
 
 	        }
