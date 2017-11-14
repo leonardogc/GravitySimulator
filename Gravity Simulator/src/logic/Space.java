@@ -625,7 +625,7 @@ public void update_collisions_v2(){
 	double velY;
 	double targetDistance;
 	boolean found=true;
-	double extra = 0.1;
+	double extra = 0.12;
 	
 	
 	while(found){
@@ -702,7 +702,7 @@ public void update_collisions_V3andV4(){
 	boolean found=true;
 	double proportion1=0.5;
 	double proportion2=0.5;
-	double extra = 0.1;
+	double extra = 0.12;
 	
 	
 	while(found){
