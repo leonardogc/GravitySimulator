@@ -191,6 +191,29 @@ public Space(int type){
 		
         particles.add(new Particle(1000,330,-1000,0,1,30));
 		
+		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));
+		
+		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,315,0,0,1,30));
+		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,345,0,0,1,30));
+		
+		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,300,0,0,1,30));
+		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,330,0,0,1,30));
+		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,360,0,0,1,30));
+		
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,285,0,0,1,30));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,315,0,0,1,30));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,345,0,0,1,30));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,375,0,0,1,30));
+		
+		particles.add(new Particle(150,270,0,0,1,30));
+		particles.add(new Particle(150,300,0,0,1,30));
+		particles.add(new Particle(150,330,0,0,1,30));
+		particles.add(new Particle(150,360,0,0,1,30));
+		particles.add(new Particle(150,390,0,0,1,30));
+		
+		/*particles.add(new Particle(1000,330,-1000,0,1,30));
+		
+
 		particles.add(new Particle(150,270,0,0,1,30));
 		particles.add(new Particle(150,300,0,0,1,30));
 		particles.add(new Particle(150,330,0,0,1,30));
@@ -209,7 +232,8 @@ public Space(int type){
 		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,315,0,0,1,30));
 		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,345,0,0,1,30));
 		
-		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));
+		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));*/
+		
 		
 	      /*for(int i=0; i<10;i++) {
 			for(int i2=0; i2<10;i2++) {
@@ -792,6 +816,147 @@ public void update_collisions_V3andV4(){
 			}
 	  }
 	
+	
+	
+	if(type==4){
+		for(int i=0;i< particles.size();i++){
+			
+			if(particles.get(i).posX<=screen_edges[0]+particles.get(i).diameter/2 && particles.get(i).velX<0){
+				particles.get(i).velX=-particles.get(i).velX;
+				
+				particles.get(i).velX=particles.get(i).velX*coefficientOfRestitution;
+				particles.get(i).velY=particles.get(i).velY*coefficientOfRestitution;
+			}
+			else if(particles.get(i).posY<=screen_edges[1]+particles.get(i).diameter/2 && particles.get(i).velY<0){
+				particles.get(i).velY=-particles.get(i).velY;
+				
+				particles.get(i).velX=particles.get(i).velX*coefficientOfRestitution;
+				particles.get(i).velY=particles.get(i).velY*coefficientOfRestitution;
+			}
+			else if(particles.get(i).posX>=screen_edges[2]-particles.get(i).diameter/2 && particles.get(i).velX>0){
+				particles.get(i).velX=-particles.get(i).velX;
+				
+				particles.get(i).velX=particles.get(i).velX*coefficientOfRestitution;
+				particles.get(i).velY=particles.get(i).velY*coefficientOfRestitution;
+			}
+			else if(particles.get(i).posY>=screen_edges[3]-particles.get(i).diameter/2 && particles.get(i).velY>0){
+				particles.get(i).velY=-particles.get(i).velY;
+				
+				particles.get(i).velX=particles.get(i).velX*coefficientOfRestitution;
+				particles.get(i).velY=particles.get(i).velY*coefficientOfRestitution;
+			}
+		}
+	}
+	
+	/*double momentumX=0;
+	double momentumY=0;
+	
+	for(int i=0;i< particles.size();i++) {
+	momentumX = momentumX + (particles.get(i).velX * particles.get(i).mass);
+	momentumY = momentumY + (particles.get(i).velY * particles.get(i).mass);
+	}
+	
+	System.out.println("Total Momentum X: "+momentumX+"\nTotal Momentum Y: "+momentumY);*/
+	
+	}
+
+
+public void update_collisions_V3andV4_1(){
+	double dx;
+	double dy;
+	double r;
+	double x;
+	double y;
+	double ex[]=new double[2];
+	double ey[]=new double[2];
+	double ex_1[]=new double[2];
+	double ey_1[]=new double[2];
+	double v1_ex;
+	double v1_ey;
+	double v2_ex;
+	double v2_ey;
+	double targetDistance;
+	boolean found=true;
+	double proportion1=0.5;
+	double proportion2=0.5;
+	double extra = 0.08;
+	
+	
+	while(found){
+			
+			found=false;
+			
+			
+			for(int i =0;i< particles.size();i++){
+				for(int i2=i+1;i2<particles.size();i2++){	
+					
+						dx=particles.get(i).posX-particles.get(i2).posX;
+						dy=particles.get(i).posY-particles.get(i2).posY;
+						r=Math.sqrt(dx*dx+dy*dy);
+						targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
+						
+					if(r<targetDistance){
+					found=true;
+					
+					ex[0]=dx/r;
+					ex[1]=dy/r;
+					
+					ey[0]=-ex[1];
+					ey[1]=ex[0];
+					
+					ex_1[0]=ex[0];
+					ex_1[1]=-ex[1];
+					ey_1[0]=-ey[0];
+					ey_1[1]=ey[1];
+					
+					v1_ex=particles.get(i).velX*ex[0]+particles.get(i).velY*ex[1];
+					v1_ey=particles.get(i).velX*ey[0]+particles.get(i).velY*ey[1];
+					v2_ex=particles.get(i2).velX*ex[0]+particles.get(i2).velY*ex[1];
+					v2_ey=particles.get(i2).velX*ey[0]+particles.get(i2).velY*ey[1];
+					
+					if(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass==0){
+					v1_ex=0;
+					v2_ex=0;
+					proportion1=0.5;
+					proportion2=0.5;
+					}
+					else if(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass<0){
+						v2_ex=(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass)/particles.get(i2).mass;
+						v1_ex=0;
+						
+						proportion1=0;
+						proportion2=1;
+					}
+					else if(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass>0){
+						v1_ex=(v1_ex*particles.get(i).mass+v2_ex*particles.get(i2).mass)/particles.get(i).mass;
+						v2_ex=0;
+						
+						proportion1=1;
+						proportion2=0;
+					}
+					
+					particles.get(i).velX=v1_ex*ex_1[0]+v1_ey*ex_1[1];
+					particles.get(i).velY=v1_ex*ey_1[0]+v1_ey*ey_1[1];
+					particles.get(i2).velX=v2_ex*ex_1[0]+v2_ey*ex_1[1];
+					particles.get(i2).velY=v2_ex*ey_1[0]+v2_ey*ey_1[1];
+					
+				
+					x=((targetDistance + extra)-r)*dx/r;
+					y=((targetDistance + extra)-r)*dy/r;
+					
+					
+					particles.get(i).posX=particles.get(i).posX+proportion1*x;
+					particles.get(i2).posX=particles.get(i2).posX-proportion2*x;
+					
+					particles.get(i).posY=particles.get(i).posY+proportion1*y;
+					particles.get(i2).posY=particles.get(i2).posY-proportion2*y;
+					
+					i=i-1;
+					break;
+					}
+				}		
+			}
+		}
 	
 	
 	if(type==4){
