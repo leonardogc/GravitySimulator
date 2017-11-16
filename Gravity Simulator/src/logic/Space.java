@@ -189,7 +189,7 @@ public Space(int type){
 		
 		particles.add(new Particle(150+4+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));*/
 		
-        particles.add(new Particle(1000,330,-1000,0,1,30));
+       /* particles.add(new Particle(1000,330,-1000,0,1,30));
 		
 		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));
 		
@@ -209,9 +209,9 @@ public Space(int type){
 		particles.add(new Particle(150,300,0,0,1,30));
 		particles.add(new Particle(150,330,0,0,1,30));
 		particles.add(new Particle(150,360,0,0,1,30));
-		particles.add(new Particle(150,390,0,0,1,30));
+		particles.add(new Particle(150,390,0,0,1,30));*/
 		
-		/*particles.add(new Particle(1000,330,-1000,0,1,30));
+		particles.add(new Particle(1000,330,-1000,0,1,30));
 		
 
 		particles.add(new Particle(150,270,0,0,1,30));
@@ -232,7 +232,7 @@ public Space(int type){
 		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,315,0,0,1,30));
 		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,345,0,0,1,30));
 		
-		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));*/
+		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,1,30));
 		
 		
 	      /*for(int i=0; i<10;i++) {
@@ -876,17 +876,10 @@ public void update_collisions_V3andV4_1(){
 	double v2_ex;
 	double v2_ey;
 	double targetDistance;
-	boolean found=true;
 	double proportion1=0.5;
 	double proportion2=0.5;
 	double extra = 0.08;
 	
-	
-	while(found){
-			
-			found=false;
-			
-			
 			for(int i =0;i< particles.size();i++){
 				for(int i2=i+1;i2<particles.size();i2++){	
 					
@@ -896,7 +889,6 @@ public void update_collisions_V3andV4_1(){
 						targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
 						
 					if(r<targetDistance){
-					found=true;
 					
 					ex[0]=dx/r;
 					ex[1]=dy/r;
@@ -956,7 +948,6 @@ public void update_collisions_V3andV4_1(){
 					}
 				}		
 			}
-		}
 	
 	
 	if(type==4){
