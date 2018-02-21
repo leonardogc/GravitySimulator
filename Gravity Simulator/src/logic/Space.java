@@ -34,7 +34,6 @@ public Space(){
 	rand=new Random();
 	double vx=0;//[-80,80] used in simulation
 	double vy=0;
-	double vz=0;
 	double m;//[0.1,10] used in simulation
 	
 	particles=new Vector<Particle>();
@@ -73,12 +72,10 @@ public Space(){
 
 		for(int i=0;i<20;i++){
 			for(int i2=0;i2<20;i2++){
-				for(int i3=0;i3<20;i3++){
 					//		    vx=Math.abs(r.nextInt(161)-80);
 					//			vy=Math.abs(r.nextInt(161)-80);
 					vx=rand.nextInt(161)-80;
 					vy=rand.nextInt(161)-80;
-					vz=rand.nextInt(161)-80;
 					m=(double)(rand.nextInt(400)+1)/10;
 
 					/*if(i<=((double)25/50)*i2 && i<=((double)-25/50)*i2+25){
@@ -95,8 +92,7 @@ public Space(){
             	vx=0;
               }*/
 
-					particles.addElement(new Particle(i3*50-500,i2*50-500,i*50-500,vx,vy,vz,m,rand.nextInt(4)));
-				}
+					particles.addElement(new Particle(i2*50-500,i*50-500,vx,vy,m,rand.nextInt(4)));
 			}
 		}
 		
@@ -182,15 +178,13 @@ public Space(){
 					for(int i2=-20;i2<5;i2++){
 						vx=rand.nextInt(21)-10;
 						vy=rand.nextInt(21)-10;
-						vz=rand.nextInt(21)-10;
 						m=(double)(rand.nextInt(500)+1)/10;
 						
 						/*vx=0;
-						vy=0;
-						vz=0;*/
+						vy=0;*/
 						m=50;
 					
-					particles.addElement(new Particle(i2*40-260,i*40-180,0,vx,vy,vz,m,rand.nextInt(4)));	
+					particles.addElement(new Particle(i2*40-260,i*40-180,vx,vy,m,rand.nextInt(4)));	
 				  }
 				}
 				
@@ -200,17 +194,13 @@ public Space(){
 					for(int i2=5;i2<30;i2++){
 						vx=rand.nextInt(21)-10;
 						vy=rand.nextInt(21)-10;
-						vz=rand.nextInt(21)-10;
 						m=(double)(rand.nextInt(500)+1)/10;
 						
 						/*vx=0;
-						vy=0;
-						if(i != 9 || i2 != 9) {
-						vz=0;
-						}*/
+						vy=0;*/
 						m=50;
 					
-					particles.addElement(new Particle(i2*40-120,i*40-180,0,vx,vy,vz,m,rand.nextInt(4)));
+					particles.addElement(new Particle(i2*40-120,i*40-180,vx,vy,m,rand.nextInt(4)));
 						
 				  }
 				}
@@ -276,20 +266,20 @@ public Space(){
 		public double mult_kg_by=Math.pow(10, -24);
 		public double mult_s_by=10.0/(365*24*60*60);*/
 		
-		particles.add(new Particle(0,0,0,0,0,0,1.98855*Math.pow(10,30)*mult_kg_by,20,1)); //sun
+		particles.add(new Particle(0,0,0,0,1.98855*Math.pow(10,30)*mult_kg_by,20,1)); //sun
 		
-		particles.add(new Particle(0,0,-46000000000.0*mult_m_by,-58980*mult_m_by/mult_s_by,0,0,0.3302*Math.pow(10,24)*mult_kg_by,10,1)); //mercury
+		particles.add(new Particle(0,-46000000000.0*mult_m_by,-58980*mult_m_by/mult_s_by,0,0.3302*Math.pow(10,24)*mult_kg_by,10,1)); //mercury
 		
-		particles.add(new Particle(107480000000.0*mult_m_by*(-Math.sin(Math.PI/12)),0,107480000000.0*mult_m_by*Math.cos(Math.PI/12),
-									35260*Math.cos(Math.PI/12)*mult_m_by/mult_s_by,0,35260*Math.sin(Math.PI/12)*mult_m_by/mult_s_by,
+		particles.add(new Particle(107480000000.0*mult_m_by*(-Math.sin(Math.PI/12)),107480000000.0*mult_m_by*Math.cos(Math.PI/12),
+									35260*Math.cos(Math.PI/12)*mult_m_by/mult_s_by,35260*Math.sin(Math.PI/12)*mult_m_by/mult_s_by,
 									4.8685*Math.pow(10,24)*mult_kg_by,10,1)); //venus
 		
-		particles.add(new Particle(0,0,-147090000000.0*mult_m_by,
-									-30290*mult_m_by/mult_s_by,0,0,
+		particles.add(new Particle(0,-147090000000.0*mult_m_by,
+									-30290*mult_m_by/mult_s_by,0,
 									5.9736*Math.pow(10,24)*mult_kg_by,10,1)); //earth
 		
-		particles.add(new Particle(206620000000.0*mult_m_by*Math.cos(Math.PI/10),0,206620000000.0*mult_m_by*Math.sin(Math.PI/10),
-				26500*Math.sin(Math.PI/10)*mult_m_by/mult_s_by,0,-26500*Math.cos(Math.PI/10)*mult_m_by/mult_s_by,
+		particles.add(new Particle(206620000000.0*mult_m_by*Math.cos(Math.PI/10),206620000000.0*mult_m_by*Math.sin(Math.PI/10),
+				26500*Math.sin(Math.PI/10)*mult_m_by/mult_s_by,-26500*Math.cos(Math.PI/10)*mult_m_by/mult_s_by,
 				0.64185*Math.pow(10,24)*mult_kg_by,10,1)); //mars
 		
 		

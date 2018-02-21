@@ -63,27 +63,18 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	@Override
 	protected void paintComponent(Graphics g) {
 	 super.paintComponent(g);
-	
-	 double x;
 	 
 	for(int i=0;i<space.particles.size();i++){
 		
 		g.setColor(space.particles.get(i).color);
 		
-		x=Math.cos(space.angle)*space.particles.get(i).pos[0] + Math.sin(space.angle)*space.particles.get(i).pos[1];
-		 
-		/*g.fillOval((int)((space.particles.get(i).pos[0]-space.particles.get(i).diameter/2)*scaleFactor+dx),
+		g.fillOval((int)((space.particles.get(i).pos[0]-space.particles.get(i).diameter/2)*scaleFactor+dx),
 			    (int)((space.particles.get(i).pos[1]-space.particles.get(i).diameter/2)*scaleFactor+dy),
-			    (int)(space.particles.get(i).diameter*scaleFactor), 
-			    (int)(space.particles.get(i).diameter*scaleFactor));*/
-		
-		g.fillOval((int)((x-space.particles.get(i).diameter/2)*scaleFactor+dx),
-			    (int)((space.particles.get(i).pos[2]-space.particles.get(i).diameter/2)*scaleFactor+dy),
 			    (int)(space.particles.get(i).diameter*scaleFactor), 
 			    (int)(space.particles.get(i).diameter*scaleFactor));
 	}
 
-	if(playing && space.angle==0 && space.draw_grid==true && space.gravity==Gravity.Tree) {
+	if(playing && space.draw_grid==true && space.gravity==Gravity.Tree) {
 		g.setColor(Color.BLACK);
 		
 		for(int i =0 ; i<space.octree.squares.size();i++) {
@@ -125,38 +116,7 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			if(!playing){
 			repaint();
 			}
-			break;
-		case KeyEvent.VK_A:
-			space.angle+=Math.toRadians(1);
-			if(!playing){
-			repaint();
-			}
 			break;	
-		case KeyEvent.VK_D:
-			space.angle-=Math.toRadians(1);
-			if(!playing){
-			repaint();
-			}
-			break;	
-		case KeyEvent.VK_R:
-			if(space.rotate){
-				space.rotate=false; 
-			}
-			else{
-				space.rotate=true; 
-			}
-			
-			System.out.println("Rotate: " + space.rotate);
-			break;		
-		case KeyEvent.VK_Z:
-			space.angle=0;
-			
-			System.out.println("Angle: " + space.angle);
-			if(!playing){
-				repaint();
-				}
-			break;	
-			
 		case KeyEvent.VK_P:
 			this.take_pictures=!this.take_pictures;
 			

@@ -44,14 +44,6 @@ public class LoopThread extends Thread{
 	            	g.space.update(1/max_fps);
 	            	g.repaint();
 
-	            	if(g.space.rotate == true) {
-	            		g.space.angle+=Math.toRadians(360/(max_fps*seconds_per_rotation));
-	            		if(g.space.angle >= 2*Math.PI) {
-	            			g.space.angle=0;
-	            		}
-	            	}
-
-
 	            	if(g.take_pictures) {
 	            		if(counter % (int)(max_fps/60) == 0){
 
