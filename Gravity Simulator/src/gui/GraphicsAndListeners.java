@@ -1,5 +1,6 @@
 package gui;
 
+import java.awt.Color;
 import java.awt.Graphics;
 import java.awt.event.ActionEvent;
 import java.awt.event.ActionListener;
@@ -7,6 +8,7 @@ import java.awt.event.KeyEvent;
 import java.awt.event.KeyListener;
 import java.awt.event.MouseEvent;
 import java.awt.event.MouseListener;
+import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
@@ -16,8 +18,9 @@ import javax.swing.JPanel;
 import javax.swing.Timer;
 
 import logic.Space;
+import logic.Space.Gravity;
 
-public class GraphicsAndListeners extends JPanel implements KeyListener, MouseListener, ActionListener{
+public class GraphicsAndListeners extends JPanel implements KeyListener, MouseListener, ActionListener, MouseMotionListener{
 	
 	public Space space;
 	public GraphicInterface graphics;
@@ -28,13 +31,16 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	private int dy;
 	private double scaleFactor;
 	private LoopThread thread;
-	int pictureNumber; //only used for taking pictures
+	public int pictureNumber; //only used for taking pictures
+	public boolean take_pictures;
+	
 	
 	public GraphicsAndListeners(GraphicInterface g){
 		addKeyListener(this);
 		addMouseListener(this);
+		addMouseMotionListener(this);
 		
-		space=new Space(1);  //1 for gravity and merging, 2 for gravity without merging (kinda lame), 3 for gravity and acting like pool balls, 4 for pool balls 
+		space=new Space();
 		this.graphics=g;
 		
 		playing=false;
@@ -45,6 +51,7 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		scaleFactor=1;
 		
 		pictureNumber=1;
+		take_pictures=false;
 		
 		thread=new LoopThread(this);
 		thread.setRunning(true);
@@ -57,19 +64,36 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	protected void paintComponent(Graphics g) {
 	 super.paintComponent(g);
 	
+	 double x;
+	 
 	for(int i=0;i<space.particles.size();i++){
-	 g.fillOval((int)((space.particles.get(i).posX-space.particles.get(i).diameter/2)*scaleFactor+dx),
-			    (int)((space.particles.get(i).posY-space.particles.get(i).diameter/2)*scaleFactor+dy),
+		
+		g.setColor(space.particles.get(i).color);
+		
+		x=Math.cos(space.angle)*space.particles.get(i).pos[0] + Math.sin(space.angle)*space.particles.get(i).pos[1];
+		 
+		/*g.fillOval((int)((space.particles.get(i).pos[0]-space.particles.get(i).diameter/2)*scaleFactor+dx),
+			    (int)((space.particles.get(i).pos[1]-space.particles.get(i).diameter/2)*scaleFactor+dy),
+			    (int)(space.particles.get(i).diameter*scaleFactor), 
+			    (int)(space.particles.get(i).diameter*scaleFactor));*/
+		
+		g.fillOval((int)((x-space.particles.get(i).diameter/2)*scaleFactor+dx),
+			    (int)((space.particles.get(i).pos[2]-space.particles.get(i).diameter/2)*scaleFactor+dy),
 			    (int)(space.particles.get(i).diameter*scaleFactor), 
 			    (int)(space.particles.get(i).diameter*scaleFactor));
-	 }
-	
-	if(space.type==4){
-	g.drawLine((int)(space.screen_edges[0]*scaleFactor+dx), (int)(space.screen_edges[1]*scaleFactor+dy), (int)(space.screen_edges[2]*scaleFactor+dx), (int)(space.screen_edges[1]*scaleFactor+dy));
-	g.drawLine((int)(space.screen_edges[0]*scaleFactor+dx), (int)(space.screen_edges[3]*scaleFactor+dy), (int)(space.screen_edges[2]*scaleFactor+dx), (int)(space.screen_edges[3]*scaleFactor+dy));
-	g.drawLine((int)(space.screen_edges[0]*scaleFactor+dx), (int)(space.screen_edges[1]*scaleFactor+dy), (int)(space.screen_edges[0]*scaleFactor+dx), (int)(space.screen_edges[3]*scaleFactor+dy));
-	g.drawLine((int)(space.screen_edges[2]*scaleFactor+dx), (int)(space.screen_edges[1]*scaleFactor+dy), (int)(space.screen_edges[2]*scaleFactor+dx), (int)(space.screen_edges[3]*scaleFactor+dy));
 	}
+
+	if(playing && space.angle==0 && space.draw_grid==true && space.gravity==Gravity.Tree) {
+		g.setColor(Color.BLACK);
+		
+		for(int i =0 ; i<space.octree.squares.size();i++) {
+			g.drawRect((int)((space.octree.squares.get(i)[0]-(space.octree.squares.get(i)[2]/2))*scaleFactor+dx),
+					   (int)((space.octree.squares.get(i)[1]-(space.octree.squares.get(i)[2]/2))*scaleFactor+dy),
+					   (int)(space.octree.squares.get(i)[2]*scaleFactor),
+					   (int)(space.octree.squares.get(i)[2]*scaleFactor));
+		}
+	}
+	
 	}
 
 	@Override
@@ -82,10 +106,12 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			else{
 			playing=true; 
 			}
+			
+			System.out.println("Playing: " + playing);
 		break;  
 		case KeyEvent.VK_LEFT:
 			playing=false;
-			space=new Space(space.type);
+			space=new Space();
 			repaint();
 			break;
 		case KeyEvent.VK_UP:
@@ -100,7 +126,49 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			repaint();
 			}
 			break;
+		case KeyEvent.VK_A:
+			space.angle+=Math.toRadians(1);
+			if(!playing){
+			repaint();
+			}
+			break;	
+		case KeyEvent.VK_D:
+			space.angle-=Math.toRadians(1);
+			if(!playing){
+			repaint();
+			}
+			break;	
+		case KeyEvent.VK_R:
+			if(space.rotate){
+				space.rotate=false; 
+			}
+			else{
+				space.rotate=true; 
+			}
+			
+			System.out.println("Rotate: " + space.rotate);
+			break;		
+		case KeyEvent.VK_Z:
+			space.angle=0;
+			
+			System.out.println("Angle: " + space.angle);
+			if(!playing){
+				repaint();
+				}
+			break;	
+			
+		case KeyEvent.VK_P:
+			this.take_pictures=!this.take_pictures;
+			
+			if(this.take_pictures) {
+				System.out.println("Taking Pictures");
+			}
+			else {
+				System.out.println("Stopped Taking Pictures");
+			}
+			break;
 		}
+		
 		
 	}
 
@@ -150,25 +218,6 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	@Override
 	public void mouseReleased(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		dx=dx+(arg0.getX()-x);
-		dy=dy+(arg0.getY()-y);
-		if(!playing){
-			repaint();
-		}
-		
-		if(!playing && space.type==4){
-		double deltaX=(arg0.getX()-dx)-space.particles.get(0).posX;
-		double deltaY=(arg0.getY()-dy)-space.particles.get(0).posY;
-		double vectorSize=Math.sqrt(Math.pow(deltaX,2)+Math.pow(deltaY,2));
-		
-		double vectorX=deltaX/vectorSize;
-		double vectorY=deltaY/vectorSize;
-		
-		double speed=Math.sqrt(Math.pow(space.particles.get(0).velX,2)+Math.pow(space.particles.get(0).velY,2));
-		
-		space.particles.get(0).velX=vectorX*speed;
-		space.particles.get(0).velY=vectorY*speed;
-		}
 	}
 
 
@@ -189,6 +238,30 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	        // TODO Auto-generated catch block
 	        e.printStackTrace();
 	    }
+	}
+
+
+
+	@Override
+	public void mouseDragged(MouseEvent e) {
+		// TODO Auto-generated method stub
+		dx=dx+(e.getX()-x);
+		dy=dy+(e.getY()-y);
+		
+		x=e.getX();
+		y=e.getY();
+		
+		if(!playing){
+			repaint();
+		}
+	}
+
+
+
+	@Override
+	public void mouseMoved(MouseEvent e) {
+		// TODO Auto-generated method stub
+		
 	}
 
 }

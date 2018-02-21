@@ -28,7 +28,6 @@ public class GraphicInterface{
 	}
 
 	
-	
 	/**
 	 * Create the application.
 	 */
@@ -37,18 +36,17 @@ public class GraphicInterface{
 	}
 	
 	
-	
 	/**
 	 * Initialize the contents of the frame.
 	 */
 	private void initialize() {
 		frame = new JFrame();
-		frame.setBounds(100, 100, 1200, 700);
+		frame.setBounds(0, 0, 1366, 735);
 		frame.setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 		frame.getContentPane().setLayout(null);
 		
 		panel = new GraphicsAndListeners(this);
-		panel.setBounds(0, 0, 1184, 662);
+		panel.setBounds(0, 0, 1400, 800);
 		frame.getContentPane().add(panel);
 	}
 }

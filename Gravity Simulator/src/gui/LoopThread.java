@@ -8,11 +8,13 @@ public class LoopThread extends Thread{
 	 private double max_fps;
 	 private GraphicsAndListeners g;
 	 private int numberOfParticles; 
+	 private double seconds_per_rotation;
 
 	public LoopThread(GraphicsAndListeners g){
 		   running=false;
 	       max_fps=120;
 	       numberOfParticles=0;
+	       seconds_per_rotation=10;
 	       this.g=g;
 	}
 	
@@ -20,6 +22,7 @@ public class LoopThread extends Thread{
 	       this.running=running;
 	   }
 
+	   
 	    @Override
 	    public void run() {
 	        long startTime;
@@ -31,29 +34,43 @@ public class LoopThread extends Thread{
 	        long totalTime=0;
 	        int frameCounter=0;
 	        double averageFps;
+	        
+	        int counter=0;
 
 	        while(running){
 	            startTime= System.nanoTime();
-	            
+
 	            if(g.playing){
-	        		g.space.update(1/max_fps);
-	        		g.repaint();
-	        		
-	        		/*
-	        		if(!(g.pictureNumber>18000)){
-	        		  g.takePicture();
-	        		}
-	        		else{
-	        			
-	        			running=false;
-	        		} */
-	        		
-	        		if(numberOfParticles!=g.space.particles.size()){
-	        			numberOfParticles=g.space.particles.size();
-	        			System.out.println("Number of Particles: "+numberOfParticles);
-	        		}
-	        		}
-	          
+	            	g.space.update(1/max_fps);
+	            	g.repaint();
+
+	            	if(g.space.rotate == true) {
+	            		g.space.angle+=Math.toRadians(360/(max_fps*seconds_per_rotation));
+	            		if(g.space.angle >= 2*Math.PI) {
+	            			g.space.angle=0;
+	            		}
+	            	}
+
+
+	            	if(g.take_pictures) {
+	            		if(counter % (int)(max_fps/60) == 0){
+
+	            			g.takePicture();
+
+	            			/*if(g.pictureNumber == 1801) {
+	            				running=false;
+	            			}*/
+	            		}
+	            		
+	            		counter++;
+	            	}
+
+	            	if(numberOfParticles!=g.space.particles.size()){
+	            		numberOfParticles=g.space.particles.size();
+	            		System.out.println("Number of Particles: "+numberOfParticles);
+	            	}
+	            }
+
 	            frameDuration=System.nanoTime()-startTime;
 	            waitTime=targetTime-frameDuration;
 	            waitTimeMill = waitTime/1000000;
