@@ -8,6 +8,7 @@ import java.util.Vector;
 public class Space {
 	
 public boolean draw_grid=false;
+public boolean enable_obstacles=true;
 public Mode mode=Mode.PoolBallsFast;
 public Gravity gravity=Gravity.Iterative;
 
@@ -26,6 +27,7 @@ public enum Mode{
 }
 	
 public Vector<Particle> particles;
+public Vector<Obstacle> obstacles;
 public Random rand;
 public Octree octree;
 
@@ -37,6 +39,7 @@ public Space(){
 	double m;//[0.1,10] used in simulation
 	
 	particles=new Vector<Particle>();
+	obstacles=new Vector<Obstacle>();
 	
 	if(mode == Mode.Merging){
 		
@@ -173,6 +176,15 @@ public Space(){
 
 	}
 	else if(mode != Mode.NoCollisions) {
+		/*Vector<double[]>points=new Vector<double[]>();
+		points.add(new double[] {0,0});
+		points.add(new double[] {50,0});
+		points.add(new double[] {50,50});
+		points.add(new double[] {0,20});
+		
+		Obstacle o = new Obstacle(points);
+		
+		obstacles.add(o);*/
 
 				for(int i=0;i<10;i++){
 					for(int i2=-20;i2<5;i2++){
@@ -341,6 +353,133 @@ public void update(double t){
 	default:
 		break;
 	}
+	
+	if(enable_obstacles) {
+		update_obstacle_collisions();
+	}
+}
+
+public void update_obstacle_collisions() {
+
+	for(int i=0; i < obstacles.size();i++) {
+		for(int i2 =0;i2< particles.size();i2++){
+			if(check_obstacle_collision(particles.get(i2),obstacles.get(i))) {
+				break;
+			}
+		}
+	}
+}
+
+public boolean check_obstacle_collision(Particle p, Obstacle o) {
+	//sides
+	for(int i = 0; i < o.points.size(); i++) {
+		if(i+1 == o.points.size()) {
+			if(check_line_obstacle_collision(o.points.get(i),o.points.get(0), p)) {
+				return true;
+			}
+		}
+		else {
+			if(check_line_obstacle_collision(o.points.get(i),o.points.get(i+1), p)) {
+				return true;
+			}
+		}
+	}
+	
+	//points
+	
+	for(int i = 0; i < o.points.size(); i++) {
+		if(check_point_obstacle_collision(o.points.get(i), p)) {
+			return true;
+		}
+	}
+	
+	return false;
+}
+
+public boolean check_line_obstacle_collision(double[] p4,double[] p1, Particle p) {
+	double vector_x=0;
+	double vector_y=0;
+	
+	double vector_x2=0;
+	double vector_y2=0;
+	
+	double vector_t=0;
+	
+	double eVel=0;
+	
+	double x=0;
+	double y=0;
+	double k=0;
+	
+	double distance;
+
+	vector_x=p1[0]-p4[0];
+	vector_y=p1[1]-p4[1];
+
+	vector_x2=vector_y;
+	vector_y2=-vector_x;
+
+	vector_t=Math.sqrt(Math.pow(vector_x2,2) + Math.pow(vector_y2,2));
+
+	vector_x2/=vector_t;
+	vector_y2/=vector_t;
+
+	k=(vector_y2*(p.pos[0]-p4[0])+vector_x2*(p4[1]-p.pos[1]))/(vector_y2*(p1[0]-p4[0])-vector_x2*(p1[1]-p4[1]));
+
+	x=p4[0]+k*(p1[0]-p4[0]);
+	y=p4[1]+k*(p1[1]-p4[1]);
+
+	if(Math.sqrt(Math.pow(p.pos[0]-x,2) + Math.pow(p.pos[1]-y,2)) <= p.diameter/2) {
+		distance=Math.sqrt(Math.pow(p1[0]-p4[0],2) + Math.pow(p1[1]-p4[1],2));
+		if(Math.sqrt(Math.pow(p1[0]-x,2) + Math.pow(p1[1]-y,2)) <= distance && Math.sqrt(Math.pow(p4[0]-x,2) + Math.pow(p4[1]-y,2)) <= distance) {
+			vector_x=x-p.pos[0];
+			vector_y=y-p.pos[1];
+			
+			vector_t=Math.sqrt(Math.pow(vector_x,2) + Math.pow(vector_y,2));
+
+			vector_x/=vector_t;
+			vector_y/=vector_t;
+
+			eVel=vector_x*p.vel[0]+vector_y*p.vel[1];
+
+			if(eVel > 0) {
+				p.vel[0]+=-2*eVel*vector_x;
+				p.vel[1]+=-2*eVel*vector_y;
+				return true;
+			}
+		}
+	}
+
+	return false;
+}
+
+
+public boolean check_point_obstacle_collision(double[] p1, Particle p) {
+	double ex=0;
+	double ey=0;
+	double et=0;
+	
+	double eVel=0;
+	
+	if(Math.sqrt(Math.pow(p1[0]-p.pos[0],2) + Math.pow(p1[1]-p.pos[1],2)) <= p.diameter/2) {
+		ex=p1[0]-p.pos[0];
+		ey=p1[1]-p.pos[1];
+
+		et=Math.sqrt(Math.pow(ex,2) + Math.pow(ey,2));
+
+		ex/=et;
+		ey/=et;
+
+		eVel=p.vel[0]*ex+p.vel[1]*ey;
+
+		if(eVel > 0) {
+			p.vel[0]+=-2*eVel*ex;
+			p.vel[1]+=-2*eVel*ey;
+			return true;
+		}
+	}
+	
+	return false;
 }
 
 public void update_collisions_merging(){
@@ -361,7 +500,7 @@ public void update_collisions_merging(){
 					dy=particles.get(i).pos[1]-particles.get(i2).pos[1];
 					r=Math.sqrt(dx*dx+dy*dy);
 
-					if(r<(particles.get(i).diameter/2)+(particles.get(i2).diameter/2)){
+					if(r<=(particles.get(i).diameter/2)+(particles.get(i2).diameter/2)){
 
 						mass=particles.get(i).mass+particles.get(i2).mass;
 						posX=(particles.get(i).pos[0]*(particles.get(i).mass/mass))+(particles.get(i2).pos[0]*(particles.get(i2).mass/mass));
@@ -434,7 +573,7 @@ public void update_collisions_PoolBallsFast(){
 			r=Math.sqrt(dx*dx+dy*dy);
 			targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
 
-			if(r<targetDistance){
+			if(r<=targetDistance){
 
 				ex[0]=dx/r;
 				ex[1]=dy/r;
@@ -513,7 +652,7 @@ public void update_collisions_PoolBallsAccurate(){
 			r=Math.sqrt(dx*dx+dy*dy);
 			targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
 
-			if(r<targetDistance){
+			if(r<=targetDistance){
 
 				ex[0]=dx/r;
 				ex[1]=dy/r;
@@ -610,7 +749,7 @@ public int update_collisions_PoolBallsFastAcccurate_1(){
 			r=Math.sqrt(dx*dx+dy*dy);
 			targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
 
-			if(r<targetDistance){
+			if(r<=targetDistance){
 
 				ex[0]=dx/r;
 				ex[1]=dy/r;
@@ -697,7 +836,7 @@ public int update_collisions_PoolBallsFastAcccurate_2(){
 			r=Math.sqrt(dx*dx+dy*dy);
 			targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
 
-			if(r<targetDistance){
+			if(r<=targetDistance){
 
 				ex[0]=dx/r;
 				ex[1]=dy/r;

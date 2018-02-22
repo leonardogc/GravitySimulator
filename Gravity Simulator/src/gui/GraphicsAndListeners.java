@@ -12,11 +12,13 @@ import java.awt.event.MouseMotionListener;
 import java.awt.image.BufferedImage;
 import java.io.File;
 import java.io.IOException;
+import java.util.Vector;
 
 import javax.imageio.ImageIO;
 import javax.swing.JPanel;
 import javax.swing.Timer;
 
+import logic.Obstacle;
 import logic.Space;
 import logic.Space.Gravity;
 
@@ -34,11 +36,16 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	public int pictureNumber; //only used for taking pictures
 	public boolean take_pictures;
 	
+	public Vector<double[]> points;
+	public boolean creating_obstacle;
+	
 	
 	public GraphicsAndListeners(GraphicInterface g){
 		addKeyListener(this);
 		addMouseListener(this);
 		addMouseMotionListener(this);
+	
+		creating_obstacle=false;
 		
 		space=new Space();
 		this.graphics=g;
@@ -85,6 +92,29 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		}
 	}
 	
+	if(space.enable_obstacles) {
+		if(creating_obstacle) {
+			g.setColor(Color.BLACK);
+			for(int i =0 ; i< points.size();i++) {
+				g.fillOval((int)(points.get(i)[0]*scaleFactor+dx), (int)(points.get(i)[1]*scaleFactor+dy), 5, 5);
+			}
+		}
+		
+		for(int i =0 ; i<space.obstacles.size();i++) {
+			g.setColor(Color.BLACK);
+			
+			int[] x=new int[space.obstacles.get(i).points.size()];
+			int[] y=new int[space.obstacles.get(i).points.size()];
+			
+			for(int i2 = 0; i2< space.obstacles.get(i).points.size(); i2++) {
+				x[i2]=(int)(space.obstacles.get(i).points.get(i2)[0]*scaleFactor+dx);
+				y[i2]=(int)(space.obstacles.get(i).points.get(i2)[1]*scaleFactor+dy);
+			}
+			
+			g.drawPolygon(x,y,space.obstacles.get(i).points.size());
+		}
+	}
+	
 	}
 
 	@Override
@@ -120,8 +150,25 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 				System.out.println("Stopped Taking Pictures");
 			}
 			break;
+		case KeyEvent.VK_O:
+			if(space.enable_obstacles && !playing) {
+				if(creating_obstacle) {
+					if(points.size() > 2) {
+						Obstacle o = new Obstacle(points);
+						space.obstacles.add(o);
+					}
+					creating_obstacle = !creating_obstacle;
+					System.out.println("Obstacle Created!");
+				}
+				else{
+					points= new Vector<double[]>();
+					creating_obstacle = !creating_obstacle;
+					System.out.println("Creating Obstacle!");
+				}
+			}
+			break;
 		}
-		
+
 		
 	}
 
@@ -165,6 +212,10 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		graphics.panel.requestFocusInWindow();
 		x=arg0.getX();
 		y=arg0.getY();
+		
+		if(creating_obstacle) {
+			points.add(new double[] {(arg0.getX()-dx)/scaleFactor,(arg0.getY()-dy)/scaleFactor});
+		}
 	}
 
 
