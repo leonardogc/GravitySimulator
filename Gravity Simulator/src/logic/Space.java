@@ -9,7 +9,7 @@ public class Space {
 	
 public boolean draw_grid=false;
 public boolean enable_obstacles=true;
-public Mode mode=Mode.PoolBallsFastAccurate;
+public Mode mode=Mode.PoolBallsFast;
 public Gravity gravity=Gravity.Iterative;
 
 public double mult_m_by=1;
