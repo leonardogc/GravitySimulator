@@ -42,8 +42,7 @@ public class LoopThread extends Thread{
 
 	            if(g.playing){
 	            	g.space.update(1/max_fps);
-	            	g.repaint();
-
+	            	
 	            	if(g.take_pictures) {
 	            		if(counter % (int)(max_fps/60) == 0){
 
@@ -62,6 +61,8 @@ public class LoopThread extends Thread{
 	            		System.out.println("Number of Particles: "+numberOfParticles);
 	            	}
 	            }
+	            
+	            g.repaint();
 
 	            frameDuration=System.nanoTime()-startTime;
 	            waitTime=targetTime-frameDuration;

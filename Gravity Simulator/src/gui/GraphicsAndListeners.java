@@ -103,19 +103,12 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		case KeyEvent.VK_LEFT:
 			playing=false;
 			space=new Space();
-			repaint();
 			break;
 		case KeyEvent.VK_UP:
 			scaleFactor*=1.1;
-			if(!playing){
-			repaint();
-			}
 			break;
 		case KeyEvent.VK_DOWN:
 			scaleFactor/=1.1;
-			if(!playing){
-			repaint();
-			}
 			break;	
 		case KeyEvent.VK_P:
 			this.take_pictures=!this.take_pictures;
@@ -210,10 +203,6 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		
 		x=e.getX();
 		y=e.getY();
-		
-		if(!playing){
-			repaint();
-		}
 	}
 
 
