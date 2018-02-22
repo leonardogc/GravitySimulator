@@ -9,7 +9,7 @@ public class Space {
 	
 public boolean draw_grid=false;
 public boolean enable_obstacles=true;
-public Mode mode=Mode.PoolBallsFast;
+public Mode mode=Mode.PoolBallsFastAccurate;
 public Gravity gravity=Gravity.Iterative;
 
 public double mult_m_by=1;
@@ -176,15 +176,6 @@ public Space(){
 
 	}
 	else if(mode != Mode.NoCollisions) {
-		/*Vector<double[]>points=new Vector<double[]>();
-		points.add(new double[] {0,0});
-		points.add(new double[] {50,0});
-		points.add(new double[] {50,50});
-		points.add(new double[] {0,20});
-		
-		Obstacle o = new Obstacle(points);
-		
-		obstacles.add(o);*/
 
 				for(int i=0;i<10;i++){
 					for(int i2=-20;i2<5;i2++){

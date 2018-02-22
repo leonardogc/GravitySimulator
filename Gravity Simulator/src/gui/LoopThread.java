@@ -8,13 +8,11 @@ public class LoopThread extends Thread{
 	 private double max_fps;
 	 private GraphicsAndListeners g;
 	 private int numberOfParticles; 
-	 private double seconds_per_rotation;
 
 	public LoopThread(GraphicsAndListeners g){
 		   running=false;
 	       max_fps=120;
 	       numberOfParticles=0;
-	       seconds_per_rotation=10;
 	       this.g=g;
 	}
 	
