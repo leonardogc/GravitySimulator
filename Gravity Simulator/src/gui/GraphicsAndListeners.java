@@ -209,7 +209,7 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 	@Override
 	public void mousePressed(MouseEvent arg0) {
 		// TODO Auto-generated method stub
-		graphics.panel.requestFocusInWindow();
+		graphics.panel.requestFocus();
 		x=arg0.getX();
 		y=arg0.getY();
 		
