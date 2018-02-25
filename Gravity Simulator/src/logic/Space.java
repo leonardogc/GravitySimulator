@@ -391,9 +391,6 @@ public boolean check_line_obstacle_collision(double[] p1,double[] p2, Particle p
 	double vector_x=0;
 	double vector_y=0;
 	
-	double vector_x2=0;
-	double vector_y2=0;
-	
 	double vector_t=0;
 	
 	double eVel=0;
@@ -403,35 +400,32 @@ public boolean check_line_obstacle_collision(double[] p1,double[] p2, Particle p
 	double k=0;
 	
 	double distance;
-
+	
 	vector_x=p2[0]-p1[0];
 	vector_y=p2[1]-p1[1];
 
-	vector_x2=vector_y;
-	vector_y2=-vector_x;
+	vector_t=Math.sqrt(Math.pow(vector_x,2) + Math.pow(vector_y,2));
 
-	vector_t=Math.sqrt(Math.pow(vector_x2,2) + Math.pow(vector_y2,2));
+	vector_x/=vector_t;
+	vector_y/=vector_t;
+	
+	k=vector_x*(p.pos[0]-p1[0])+vector_y*(p.pos[1]-p1[1]);
 
-	vector_x2/=vector_t;
-	vector_y2/=vector_t;
-
-	k=(vector_y2*(p.pos[0]-p1[0])+vector_x2*(p1[1]-p.pos[1]))/(vector_y2*(p2[0]-p1[0])-vector_x2*(p2[1]-p1[1]));
-
-	x=p1[0]+k*(p2[0]-p1[0]);
-	y=p1[1]+k*(p2[1]-p1[1]);
+	x=p1[0]+k*vector_x;
+	y=p1[1]+k*vector_y;
 
 	if(Math.sqrt(Math.pow(p.pos[0]-x,2) + Math.pow(p.pos[1]-y,2)) <= p.diameter/2) {
 		distance=Math.sqrt(Math.pow(p2[0]-p1[0],2) + Math.pow(p2[1]-p1[1],2));
 		if(Math.sqrt(Math.pow(p2[0]-x,2) + Math.pow(p2[1]-y,2)) <= distance && Math.sqrt(Math.pow(p1[0]-x,2) + Math.pow(p1[1]-y,2)) <= distance) {
-			vector_x=x-p.pos[0];
-			vector_y=y-p.pos[1];
+			vector_x= x-p.pos[0];
+			vector_y= y-p.pos[1];
 			
 			vector_t=Math.sqrt(Math.pow(vector_x,2) + Math.pow(vector_y,2));
 
 			vector_x/=vector_t;
 			vector_y/=vector_t;
 
-			eVel=vector_x*p.vel[0]+vector_y*p.vel[1];
+			eVel=p.vel[0]*vector_x+p.vel[1]*vector_y;
 
 			if(eVel > 0) {
 				p.vel[0]+=-2*eVel*vector_x;
