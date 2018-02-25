@@ -96,7 +96,7 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		if(creating_obstacle) {
 			g.setColor(Color.BLACK);
 			for(int i =0 ; i< points.size();i++) {
-				g.fillOval((int)(points.get(i)[0]*scaleFactor+dx), (int)(points.get(i)[1]*scaleFactor+dy), 5, 5);
+				g.fillOval((int)(points.get(i)[0]*scaleFactor-2.5+dx), (int)(points.get(i)[1]*scaleFactor-2.5+dy), 5, 5);
 			}
 		}
 		
