@@ -478,59 +478,61 @@ public void update_collisions_merging(){
 	double posY;
 	int color=0;
 
-		for(int i =0;i< particles.size();i++){
-			for(int i2=i+1;i2<particles.size();i2++){	
-				
-					dx=particles.get(i).pos[0]-particles.get(i2).pos[0];
-					dy=particles.get(i).pos[1]-particles.get(i2).pos[1];
-					r=Math.sqrt(dx*dx+dy*dy);
+	for(int i =0;i< particles.size();i++){
+		for(int i2=i+1;i2<particles.size();i2++){	
+			Particle p1 = particles.get(i);
+			Particle p2 = particles.get(i2);
 
-					if(r<=(particles.get(i).diameter/2)+(particles.get(i2).diameter/2)){
+			dx=p1.pos[0]-p2.pos[0];
+			dy=p1.pos[1]-p2.pos[1];
+			r=Math.sqrt(dx*dx+dy*dy);
 
-						mass=particles.get(i).mass+particles.get(i2).mass;
-						posX=(particles.get(i).pos[0]*(particles.get(i).mass/mass))+(particles.get(i2).pos[0]*(particles.get(i2).mass/mass));
-						posY=(particles.get(i).pos[1]*(particles.get(i).mass/mass))+(particles.get(i2).pos[1]*(particles.get(i2).mass/mass));
-						velX=((particles.get(i).mass*particles.get(i).vel[0])+(particles.get(i2).mass*particles.get(i2).vel[0]))/mass;
-						velY=((particles.get(i).mass*particles.get(i).vel[1])+(particles.get(i2).mass*particles.get(i2).vel[1]))/mass;
-						
-						if(particles.get(i).mass > particles.get(i2).mass) {
-							if(particles.get(i).color == Color.RED) {
-								color=0;
-							}
-							else if(particles.get(i).color == Color.BLUE) {
-								color=1;
-							}
-							else if(particles.get(i).color == Color.GREEN) {
-								color=2;
-							}
-							else if(particles.get(i).color == Color.MAGENTA) {
-								color=3;
-							}
-						}
-						else {
-							if(particles.get(i2).color == Color.RED) {
-								color=0;
-							}
-							else if(particles.get(i2).color == Color.BLUE) {
-								color=1;
-							}
-							else if(particles.get(i2).color == Color.GREEN) {
-								color=2;
-							}
-							else if(particles.get(i2).color == Color.MAGENTA) {
-								color=3;
-							}
-						}
+			if(r<=(p1.diameter/2)+(p2.diameter/2)){
 
-						particles.add(i,new Particle(posX,posY,velX,velY,mass,color));
-						
-						particles.remove(i2+1);
-						particles.remove(i+1);
-						i2--;
-					}		
-			}
+				mass=p1.mass+p2.mass;
+				posX=(p1.pos[0]*(p1.mass/mass))+(p2.pos[0]*(p2.mass/mass));
+				posY=(p1.pos[1]*(p1.mass/mass))+(p2.pos[1]*(p2.mass/mass));
+				velX=((p1.mass*p1.vel[0])+(p2.mass*p2.vel[0]))/mass;
+				velY=((p1.mass*p1.vel[1])+(p2.mass*p2.vel[1]))/mass;
+
+				if(p1.mass > p2.mass) {
+					if(p1.color == Color.RED) {
+						color=0;
+					}
+					else if(p1.color == Color.BLUE) {
+						color=1;
+					}
+					else if(p1.color == Color.GREEN) {
+						color=2;
+					}
+					else if(p1.color == Color.MAGENTA) {
+						color=3;
+					}
+				}
+				else {
+					if(p2.color == Color.RED) {
+						color=0;
+					}
+					else if(p2.color == Color.BLUE) {
+						color=1;
+					}
+					else if(p2.color == Color.GREEN) {
+						color=2;
+					}
+					else if(p2.color == Color.MAGENTA) {
+						color=3;
+					}
+				}
+
+				particles.add(i,new Particle(posX,posY,velX,velY,mass,color));
+
+				particles.remove(i2+1);
+				particles.remove(i+1);
+				i2--;
+			}		
 		}
 	}
+}
 
 public void update_collisions_PoolBallsFast(){
 	double dx;
@@ -551,24 +553,27 @@ public void update_collisions_PoolBallsFast(){
 
 
 	for(int i =0;i< particles.size();i++){
+		Particle p1 = particles.get(i);
+		
 		for(int i2=i+1;i2<particles.size();i2++){	
+			Particle p2 = particles.get(i2);
 
-			dx=particles.get(i).pos[0]-particles.get(i2).pos[0];
-			dy=particles.get(i).pos[1]-particles.get(i2).pos[1];
+			dx=p1.pos[0]-p2.pos[0];
+			dy=p1.pos[1]-p2.pos[1];
 			r=Math.sqrt(dx*dx+dy*dy);
-			targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
+			targetDistance=(p1.diameter+p2.diameter)/2;
 
 			if(r<=targetDistance){
 
 				ex[0]=dx/r;
 				ex[1]=dy/r;
 
-				v1_ex=particles.get(i).vel[0]*ex[0]+particles.get(i).vel[1]*ex[1];
+				v1_ex=p1.vel[0]*ex[0]+p1.vel[1]*ex[1];
 
-				v2_ex=particles.get(i2).vel[0]*ex[0]+particles.get(i2).vel[1]*ex[1];
+				v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1];
 				
 				
-				v2_ex_after=((particles.get(i2).mass-particles.get(i).mass)*v2_ex + 2*particles.get(i).mass*v1_ex)/(particles.get(i2).mass+particles.get(i).mass);
+				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
 				
 				v1_ex_after=v2_ex-v1_ex+v2_ex_after;
 				
@@ -585,11 +590,11 @@ public void update_collisions_PoolBallsFast(){
 					proportion2=1;
 				}
 
-				particles.get(i).vel[0]=particles.get(i).vel[0]+((v1_ex_after - v1_ex)*ex[0]);
-				particles.get(i).vel[1]=particles.get(i).vel[1]+((v1_ex_after - v1_ex)*ex[1]);
+				p1.vel[0]=p1.vel[0]+((v1_ex_after - v1_ex)*ex[0]);
+				p1.vel[1]=p1.vel[1]+((v1_ex_after - v1_ex)*ex[1]);
 
-				particles.get(i2).vel[0]=particles.get(i2).vel[0]+((v2_ex_after - v2_ex)*ex[0]);
-				particles.get(i2).vel[1]=particles.get(i2).vel[1]+((v2_ex_after - v2_ex)*ex[1]);
+				p2.vel[0]=p2.vel[0]+((v2_ex_after - v2_ex)*ex[0]);
+				p2.vel[1]=p2.vel[1]+((v2_ex_after - v2_ex)*ex[1]);
 
 
 				versor[0] = dx/r;
@@ -599,11 +604,11 @@ public void update_collisions_PoolBallsFast(){
 				y=((targetDistance + extra)-r)*versor[1];
 
 
-				particles.get(i).pos[0]=particles.get(i).pos[0]+proportion1*x;
-				particles.get(i2).pos[0]=particles.get(i2).pos[0]-proportion2*x;
+				p1.pos[0]=p1.pos[0]+proportion1*x;
+				p2.pos[0]=p2.pos[0]-proportion2*x;
 
-				particles.get(i).pos[1]=particles.get(i).pos[1]+proportion1*y;
-				particles.get(i2).pos[1]=particles.get(i2).pos[1]-proportion2*y;
+				p1.pos[1]=p1.pos[1]+proportion1*y;
+				p2.pos[1]=p2.pos[1]-proportion2*y;
 			}
 		}		
 	}
@@ -630,24 +635,27 @@ public void update_collisions_PoolBallsAccurate(){
 
 
 	for(int i =0;i< particles.size();i++){
+		Particle p1 = particles.get(i);
+		
 		for(int i2=i+1;i2<particles.size();i2++){	
+			Particle p2 = particles.get(i2);
 
-			dx=particles.get(i).pos[0]-particles.get(i2).pos[0];
-			dy=particles.get(i).pos[1]-particles.get(i2).pos[1];
+			dx=p1.pos[0]-p2.pos[0];
+			dy=p1.pos[1]-p2.pos[1];
 			r=Math.sqrt(dx*dx+dy*dy);
-			targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
+			targetDistance=(p1.diameter+p2.diameter)/2;
 
 			if(r<=targetDistance){
 
 				ex[0]=dx/r;
 				ex[1]=dy/r;
 
-				v1_ex=particles.get(i).vel[0]*ex[0]+particles.get(i).vel[1]*ex[1];
+				v1_ex=p1.vel[0]*ex[0]+p1.vel[1]*ex[1];
 
-				v2_ex=particles.get(i2).vel[0]*ex[0]+particles.get(i2).vel[1]*ex[1];
+				v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1];
 				
 			
-				v2_ex_after=((particles.get(i2).mass-particles.get(i).mass)*v2_ex + 2*particles.get(i).mass*v1_ex)/(particles.get(i2).mass+particles.get(i).mass);
+				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
 				
 				v1_ex_after=v2_ex-v1_ex+v2_ex_after;
 				
@@ -664,11 +672,11 @@ public void update_collisions_PoolBallsAccurate(){
 					proportion2=1;
 				}
 
-				particles.get(i).vel[0]=particles.get(i).vel[0]+((v1_ex_after - v1_ex)*ex[0]);
-				particles.get(i).vel[1]=particles.get(i).vel[1]+((v1_ex_after - v1_ex)*ex[1]);
+				p1.vel[0]=p1.vel[0]+((v1_ex_after - v1_ex)*ex[0]);
+				p1.vel[1]=p1.vel[1]+((v1_ex_after - v1_ex)*ex[1]);
 
-				particles.get(i2).vel[0]=particles.get(i2).vel[0]+((v2_ex_after - v2_ex)*ex[0]);
-				particles.get(i2).vel[1]=particles.get(i2).vel[1]+((v2_ex_after - v2_ex)*ex[1]);
+				p2.vel[0]=p2.vel[0]+((v2_ex_after - v2_ex)*ex[0]);
+				p2.vel[1]=p2.vel[1]+((v2_ex_after - v2_ex)*ex[1]);
 
 
 				versor[0] = dx/r;
@@ -679,11 +687,11 @@ public void update_collisions_PoolBallsAccurate(){
 				y=((targetDistance + extra)-r)*versor[1];
 
 
-				particles.get(i).pos[0]=particles.get(i).pos[0]+proportion1*x;
-				particles.get(i2).pos[0]=particles.get(i2).pos[0]-proportion2*x;
+				p1.pos[0]=p1.pos[0]+proportion1*x;
+				p2.pos[0]=p2.pos[0]-proportion2*x;
 
-				particles.get(i).pos[1]=particles.get(i).pos[1]+proportion1*y;
-				particles.get(i2).pos[1]=particles.get(i2).pos[1]-proportion2*y;
+				p1.pos[1]=p1.pos[1]+proportion1*y;
+				p2.pos[1]=p2.pos[1]-proportion2*y;
 				
 				i=-1;
 				break;
@@ -727,24 +735,27 @@ public int update_collisions_PoolBallsFastAcccurate_1(){
 
 
 	for(int i =0;i< particles.size();i++){
+		Particle p1 = particles.get(i);
+		
 		for(int i2=i+1;i2<particles.size();i2++){	
+			Particle p2 = particles.get(i2);
 
-			dx=particles.get(i).pos[0]-particles.get(i2).pos[0];
-			dy=particles.get(i).pos[1]-particles.get(i2).pos[1];
+			dx=p1.pos[0]-p2.pos[0];
+			dy=p1.pos[1]-p2.pos[1];
 			r=Math.sqrt(dx*dx+dy*dy);
-			targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
+			targetDistance=(p1.diameter+p2.diameter)/2;
 
 			if(r<=targetDistance){
 
 				ex[0]=dx/r;
 				ex[1]=dy/r;
 
-				v1_ex=particles.get(i).vel[0]*ex[0]+particles.get(i).vel[1]*ex[1];
+				v1_ex=p1.vel[0]*ex[0]+p1.vel[1]*ex[1];
 
-				v2_ex=particles.get(i2).vel[0]*ex[0]+particles.get(i2).vel[1]*ex[1];
+				v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1];
 				
 				
-				v2_ex_after=((particles.get(i2).mass-particles.get(i).mass)*v2_ex + 2*particles.get(i).mass*v1_ex)/(particles.get(i2).mass+particles.get(i).mass);
+				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
 				
 				v1_ex_after=v2_ex-v1_ex+v2_ex_after;
 				
@@ -761,11 +772,11 @@ public int update_collisions_PoolBallsFastAcccurate_1(){
 					proportion2=1;
 				}
 
-				particles.get(i).vel[0]=particles.get(i).vel[0]+((v1_ex_after - v1_ex)*ex[0]);
-				particles.get(i).vel[1]=particles.get(i).vel[1]+((v1_ex_after - v1_ex)*ex[1]);
+				p1.vel[0]=p1.vel[0]+((v1_ex_after - v1_ex)*ex[0]);
+				p1.vel[1]=p1.vel[1]+((v1_ex_after - v1_ex)*ex[1]);
 
-				particles.get(i2).vel[0]=particles.get(i2).vel[0]+((v2_ex_after - v2_ex)*ex[0]);
-				particles.get(i2).vel[1]=particles.get(i2).vel[1]+((v2_ex_after - v2_ex)*ex[1]);
+				p2.vel[0]=p2.vel[0]+((v2_ex_after - v2_ex)*ex[0]);
+				p2.vel[1]=p2.vel[1]+((v2_ex_after - v2_ex)*ex[1]);
 
 
 				versor[0] = dx/r;
@@ -776,11 +787,11 @@ public int update_collisions_PoolBallsFastAcccurate_1(){
 				y=((targetDistance + extra)-r)*versor[1];
 
 
-				particles.get(i).pos[0]=particles.get(i).pos[0]+proportion1*x;
-				particles.get(i2).pos[0]=particles.get(i2).pos[0]-proportion2*x;
+				p1.pos[0]=p1.pos[0]+proportion1*x;
+				p2.pos[0]=p2.pos[0]-proportion2*x;
 
-				particles.get(i).pos[1]=particles.get(i).pos[1]+proportion1*y;
-				particles.get(i2).pos[1]=particles.get(i2).pos[1]-proportion2*y;
+				p1.pos[1]=p1.pos[1]+proportion1*y;
+				p2.pos[1]=p2.pos[1]-proportion2*y;
 				
 				if(i > particles.size()/2) {
 					return 2;
@@ -814,24 +825,27 @@ public int update_collisions_PoolBallsFastAcccurate_2(){
 
 
 	for(int i =particles.size()-1;i>=0;i--){
+		Particle p1 = particles.get(i);
+		
 		for(int i2=i-1;i2>=0;i2--){	
+			Particle p2 = particles.get(i2);
 
-			dx=particles.get(i).pos[0]-particles.get(i2).pos[0];
-			dy=particles.get(i).pos[1]-particles.get(i2).pos[1];
+			dx=p1.pos[0]-p2.pos[0];
+			dy=p1.pos[1]-p2.pos[1];
 			r=Math.sqrt(dx*dx+dy*dy);
-			targetDistance=(particles.get(i).diameter+particles.get(i2).diameter)/2;
+			targetDistance=(p1.diameter+p2.diameter)/2;
 
 			if(r<=targetDistance){
 
 				ex[0]=dx/r;
 				ex[1]=dy/r;
 
-				v1_ex=particles.get(i).vel[0]*ex[0]+particles.get(i).vel[1]*ex[1];
+				v1_ex=p1.vel[0]*ex[0]+p1.vel[1]*ex[1];
 
-				v2_ex=particles.get(i2).vel[0]*ex[0]+particles.get(i2).vel[1]*ex[1];
+				v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1];
 				
 				
-				v2_ex_after=((particles.get(i2).mass-particles.get(i).mass)*v2_ex + 2*particles.get(i).mass*v1_ex)/(particles.get(i2).mass+particles.get(i).mass);
+				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
 				
 				v1_ex_after=v2_ex-v1_ex+v2_ex_after;
 				
@@ -848,11 +862,11 @@ public int update_collisions_PoolBallsFastAcccurate_2(){
 					proportion2=1;
 				}
 
-				particles.get(i).vel[0]=particles.get(i).vel[0]+((v1_ex_after - v1_ex)*ex[0]);
-				particles.get(i).vel[1]=particles.get(i).vel[1]+((v1_ex_after - v1_ex)*ex[1]);
+				p1.vel[0]=p1.vel[0]+((v1_ex_after - v1_ex)*ex[0]);
+				p1.vel[1]=p1.vel[1]+((v1_ex_after - v1_ex)*ex[1]);
 
-				particles.get(i2).vel[0]=particles.get(i2).vel[0]+((v2_ex_after - v2_ex)*ex[0]);
-				particles.get(i2).vel[1]=particles.get(i2).vel[1]+((v2_ex_after - v2_ex)*ex[1]);
+				p2.vel[0]=p2.vel[0]+((v2_ex_after - v2_ex)*ex[0]);
+				p2.vel[1]=p2.vel[1]+((v2_ex_after - v2_ex)*ex[1]);
 
 
 				versor[0] = dx/r;
@@ -863,11 +877,11 @@ public int update_collisions_PoolBallsFastAcccurate_2(){
 				y=((targetDistance + extra)-r)*versor[1];
 
 
-				particles.get(i).pos[0]=particles.get(i).pos[0]+proportion1*x;
-				particles.get(i2).pos[0]=particles.get(i2).pos[0]-proportion2*x;
+				p1.pos[0]=p1.pos[0]+proportion1*x;
+				p2.pos[0]=p2.pos[0]-proportion2*x;
 
-				particles.get(i).pos[1]=particles.get(i).pos[1]+proportion1*y;
-				particles.get(i2).pos[1]=particles.get(i2).pos[1]-proportion2*y;
+				p1.pos[1]=p1.pos[1]+proportion1*y;
+				p2.pos[1]=p2.pos[1]-proportion2*y;
 				
 				if(i < particles.size()/2) {
 					return 1;
