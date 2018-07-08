@@ -353,10 +353,9 @@ public void update(double t){
 }
 
 public void update_obstacle_collisions() {
-
-	for(int i=0; i < obstacles.size();i++) {
-		for(int i2 =0;i2< particles.size();i2++){
-			if(check_obstacle_collision(particles.get(i2),obstacles.get(i))) {
+	for(int i =0;i< particles.size();i++){
+		for(int i2=0; i2 < obstacles.size();i2++) {
+			if(check_obstacle_collision(particles.get(i),obstacles.get(i2))) {
 				break;
 			}
 		}
