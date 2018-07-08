@@ -315,11 +315,13 @@ public void update(double t){
 	else if(gravity == Gravity.Iterative) {
 		
 		for(int i =0;i< particles.size();i++){
+			Particle p1 = particles.get(i);
+			
 			for(int i2=i+1;i2<particles.size();i2++){	
-				updateAcceleration(particles.get(i),particles.get(i2));
+				updateAcceleration(p1,particles.get(i2));
 			}
 
-			particles.get(i).updateVel_Pos_setAcc0(t);
+			p1.updateVel_Pos_setAcc0(t);
 		}
 	}
 	else if(gravity == Gravity.NoGravity) {
