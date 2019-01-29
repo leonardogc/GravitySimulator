@@ -29,7 +29,9 @@ public class Octree {
 
 			calculate_particle_acc(par);
 
-			par.updateVel_Pos_setAcc0(t);
+			par.updateVel(t);
+			par.updatePos(t);
+			par.setAcc0();
 		}
 	}
 

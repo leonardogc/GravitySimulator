@@ -80,14 +80,18 @@ public class Particle {
 	}
 
 
-	public void updateVel_Pos_setAcc0(double t){
+	public void updateVel(double t){
 		vel[0]=vel[0]+acc[0]*t;
 		vel[1]=vel[1]+acc[1]*t;
-
-		acc[0]=0;
-		acc[1]=0;
-
+	}
+	
+	public void updatePos(double t){
 		pos[0]=pos[0]+vel[0]*t;
 		pos[1]=pos[1]+vel[1]*t;
+	}
+	
+	public void setAcc0(){
+		acc[0]=0;
+		acc[1]=0;
 	}
 }

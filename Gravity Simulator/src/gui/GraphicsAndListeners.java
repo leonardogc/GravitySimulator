@@ -49,7 +49,7 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 		creating_obstacle=false;
 
 		space=new Space();
-		this.graphics=g;
+		graphics=g;
 
 		playing=false;
 
@@ -151,9 +151,9 @@ public class GraphicsAndListeners extends JPanel implements KeyListener, MouseLi
 			scaleFactor/=1.1;
 			break;	
 		case KeyEvent.VK_P:
-			this.take_pictures=!this.take_pictures;
+			take_pictures=!take_pictures;
 
-			if(this.take_pictures) {
+			if(take_pictures) {
 				System.out.println("Taking Pictures");
 			}
 			else {

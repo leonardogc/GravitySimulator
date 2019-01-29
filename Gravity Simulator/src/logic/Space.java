@@ -8,7 +8,7 @@ public class Space {
 
 	public boolean draw_grid=false;
 	public boolean enable_obstacles=true;
-	public Mode mode=Mode.PoolBallsFast;
+	public Mode mode=Mode.PoolBallsAccurate;
 	public Gravity gravity=Gravity.Iterative;
 
 	public double mult_m_by=1;
@@ -18,7 +18,7 @@ public class Space {
 	public double g=6.674*Math.pow(10, -11)*Math.pow(mult_m_by, 3)*Math.pow(mult_kg_by, -1)*Math.pow(mult_s_by, -2);
 
 	public enum Gravity{
-		Tree, Iterative, NoGravity
+		Tree, Iterative, NoGravityInteraction
 	}
 
 	public enum Mode{
@@ -240,27 +240,27 @@ public class Space {
 		particles.addElement(new Particle(-4570,180,300,0,100));*/
 
 
-			/*particles.add(new Particle(1000,0,330,-100,0,0,10,30,1));
+			/*particles.add(new Particle(400,330,-100,0,10,30,1));
 
-		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,0,330,0,0,0,10,30,1));
+		particles.add(new Particle(150+4*Math.sin(Math.PI/3)*30,330,0,0,10,30,1));
 
-		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,0,315,0,0,0,10,30,1));
-		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,0,345,0,0,0,10,30,1));
+		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,315,0,0,10,30,1));
+		particles.add(new Particle(150+3*Math.sin(Math.PI/3)*30,345,0,0,10,30,1));
 
-		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,0,300,0,0,0,10,30,1));
-		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,0,330,0,0,0,10,30,1));
-		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,0,360,0,0,0,10,30,1));
+		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,300,0,0,10,30,1));
+		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,330,0,0,10,30,1));
+		particles.add(new Particle(150+2*Math.sin(Math.PI/3)*30,360,0,0,10,30,1));
 
-		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,0,285,0,0,0,10,30,1));
-		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,0,315,0,0,0,10,30,1));
-		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,0,345,0,0,0,10,30,1));
-		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,0,375,0,0,0,10,30,1));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,285,0,0,10,30,1));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,315,0,0,10,30,1));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,345,0,0,10,30,1));
+		particles.add(new Particle(150+Math.sin(Math.PI/3)*30,375,0,0,10,30,1));
 
-		particles.add(new Particle(150,0,270,0,0,0,10,30,1));
-		particles.add(new Particle(150,0,300,0,0,0,10,30,1));
-		particles.add(new Particle(150,0,330,0,0,0,10,30,1));
-		particles.add(new Particle(150,0,360,0,0,0,10,30,1));
-		particles.add(new Particle(150,0,390,0,0,0,10,30,1));*/
+		particles.add(new Particle(150,270,0,0,10,30,1));
+		particles.add(new Particle(150,300,0,0,10,30,1));
+		particles.add(new Particle(150,330,0,0,10,30,1));
+		particles.add(new Particle(150,360,0,0,10,30,1));
+		particles.add(new Particle(150,390,0,0,10,30,1));*/
 		}
 		else {
 
@@ -320,12 +320,17 @@ public class Space {
 					updateAcceleration(p1,particles.get(i2));
 				}
 
-				p1.updateVel_Pos_setAcc0(t);
+				p1.updateVel(t);
+				p1.updatePos(t);
+				p1.setAcc0();
 			}
 		}
-		else if(gravity == Gravity.NoGravity) {
+		else if(gravity == Gravity.NoGravityInteraction) {
 			for(int i =0;i< particles.size();i++){
-				particles.get(i).updateVel_Pos_setAcc0(t);
+				Particle p1 = particles.get(i);
+				
+				p1.updateVel(t);
+				p1.updatePos(t);
 			}
 		}
 
@@ -699,6 +704,83 @@ public class Space {
 			}		
 		}
 	}
+	
+	/*public void update_collisions_PoolBallsAccurate(){
+		for(int i =0;i< particles.size();i++){
+			Particle p1 = particles.get(i);
+
+			for(int i2=i+1;i2<particles.size();i2++){	
+				Particle p2 = particles.get(i2);
+
+				if(handleBallBallCollision(p1, p2)) {
+					i = -1;
+					break;
+				}
+			}		
+		}
+	}
+	
+	public boolean handleBallBallCollision(Particle p1, Particle p2) {
+		double dx=p1.pos[0]-p2.pos[0];
+		double dy=p1.pos[1]-p2.pos[1];
+		double d=Math.sqrt(dx*dx+dy*dy);
+		double targetDistance=(p1.diameter+p2.diameter)/2;
+
+		if(d<targetDistance){
+			double a=Math.pow(p1.vel[0]-p2.vel[0], 2)+Math.pow(p1.vel[1]-p2.vel[1], 2);
+			double b=(2*p1.pos[0]-2*p2.pos[0])*(p1.vel[0]-p2.vel[0])+(2*p1.pos[1]-2*p2.pos[1])*(p1.vel[1]-p2.vel[1]);
+			double c=Math.pow(p1.pos[0], 2)+Math.pow(p2.pos[0], 2)+Math.pow(p1.pos[1], 2)+Math.pow(p2.pos[1], 2)-2*p1.pos[0]*p2.pos[0]-2*p1.pos[1]*p2.pos[1]-Math.pow(targetDistance, 2);
+			
+			if(b*b-4*a*c >= 0 && 2*a != 0) {
+				double t = (-b-Math.sqrt(b*b-4*a*c))/(2*a);
+				
+				p1.pos[0] = p1.pos[0] + p1.vel[0]*t;
+				p1.pos[1] = p1.pos[1] + p1.vel[1]*t;
+				
+				p2.pos[0] = p2.pos[0] + p2.vel[0]*t;
+				p2.pos[1] = p2.pos[1] + p2.vel[1]*t;
+			}
+			else {
+				double x=(targetDistance-d)*(dx/d);
+				double y=(targetDistance-d)*(dy/d);
+
+
+				p1.pos[0]=p1.pos[0]+0.5*x;
+				p2.pos[0]=p2.pos[0]-0.5*x;
+
+				p1.pos[1]=p1.pos[1]+0.5*y;
+				p2.pos[1]=p2.pos[1]-0.5*y;
+			}
+			
+			dx=p1.pos[0]-p2.pos[0];
+			dy=p1.pos[1]-p2.pos[1];
+			d=Math.sqrt(dx*dx+dy*dy);
+			
+			double[] ex = new double[2];
+			
+			ex[0]=dx/d;
+			ex[1]=dy/d;
+
+			double v1_ex=p1.vel[0]*ex[0]+p1.vel[1]*ex[1];
+
+			double v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1];
+
+
+			double v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
+
+			double v1_ex_after=v2_ex-v1_ex+v2_ex_after;
+
+			p1.vel[0]=p1.vel[0]+((v1_ex_after - v1_ex)*ex[0]);
+			p1.vel[1]=p1.vel[1]+((v1_ex_after - v1_ex)*ex[1]);
+
+			p2.vel[0]=p2.vel[0]+((v2_ex_after - v2_ex)*ex[0]);
+			p2.vel[1]=p2.vel[1]+((v2_ex_after - v2_ex)*ex[1]);
+			
+			return true;
+		}
+		
+		return false;
+	}*/
 
 
 	public void update_collisions_PoolBallsFastAcccurate(){
