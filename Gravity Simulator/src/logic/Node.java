@@ -1,5 +1,6 @@
 package logic;
 
+import java.util.ArrayList;
 import java.util.Vector;
 
 public class Node {
@@ -12,9 +13,9 @@ public class Node {
 	public double threshold;
 	public double g;
 	public boolean empty;
-	public Vector<double[]> squares;
-	
-	public Node(double center[],double size,double g,double threshold,Vector<double[]> squares) {
+	public ArrayList<double[]> squares;
+
+	public Node(double center[],double size,double g,double threshold,ArrayList<double[]> squares) {
 		this.center=center;
 		this.size=size;
 		this.g=g;
@@ -24,22 +25,22 @@ public class Node {
 		this.total_mass=0;
 		this.center_of_mass= new double[2];
 		this.empty=true;
-		
+
 		this.center_of_mass[0]=0;
 		this.center_of_mass[1]=0;
-		
+
 		this.squares=squares;
-		
+
 		this.squares.add(new double[] {this.center[0],this.center[1], this.size});
 	}
-	
+
 	public void add(Particle p) {
 
 		if(leaf==null && empty) {
 			leaf = p;
 			center_of_mass[0]=p.pos[0];
 			center_of_mass[1]=p.pos[1];
-			
+
 			total_mass=leaf.mass;
 			empty=false;
 		}
@@ -47,31 +48,31 @@ public class Node {
 			createChildren();
 			children[checkPos(leaf)].add(leaf);
 			children[checkPos(p)].add(p);
-			
+
 			total_mass = p.mass + leaf.mass;
-	
+
 			center_of_mass[0]=(p.pos[0]*p.mass + leaf.pos[0]*leaf.mass)/(leaf.mass+p.mass);
 			center_of_mass[1]=(p.pos[1]*p.mass + leaf.pos[1]*leaf.mass)/(leaf.mass+p.mass);
-			
+
 			leaf=null;
 		}
 		else if(leaf==null && !empty) {
 			children[checkPos(p)].add(p);
 			total_mass+=p.mass;
-			
+
 			center_of_mass[0]=0;
 			center_of_mass[1]=0;
-			
+
 			for(int i=0; i < 4; i++) {
 				center_of_mass[0]+=children[i].center_of_mass[0]*children[i].total_mass;
 				center_of_mass[1]+=children[i].center_of_mass[1]*children[i].total_mass;
 			}
-			
+
 			center_of_mass[0]=center_of_mass[0]/total_mass;
 			center_of_mass[1]=center_of_mass[1]/total_mass;
 		}
 	}
-	
+
 	public int checkPos(Particle p) {
 		if(p.pos[0]<=center[0] && p.pos[1] > center[1]) {
 			return 0;
@@ -101,7 +102,7 @@ public class Node {
 				if(p != leaf) {
 					versor[0] = dx/d;
 					versor[1] = dy/d;
-					
+
 					if(d < (p.diameter/2) + (leaf.diameter/2)){
 						d=(p.diameter/2) + (leaf.diameter/2);
 						d2=d*d;

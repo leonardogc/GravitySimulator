@@ -1,11 +1,11 @@
 package logic;
 
-import java.util.Vector;
+import java.util.ArrayList;
 
 public class Obstacle {
-	public Vector<double[]> points;
-	
-	public Obstacle(Vector<double[]> points) {
+	public ArrayList<double[]> points;
+
+	public Obstacle(ArrayList<double[]> points) {
 		this.points=points;
 	}
 }
