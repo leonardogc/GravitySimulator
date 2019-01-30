@@ -16,6 +16,8 @@ public class Space {
 	public double mult_s_by=1;
 
 	public double g=6.674*Math.pow(10, -11)*Math.pow(mult_m_by, 3)*Math.pow(mult_kg_by, -1)*Math.pow(mult_s_by, -2);
+	
+	public double extra=0.01;
 
 	public enum Gravity{
 		Tree, Iterative, NoGravityInteraction
@@ -333,7 +335,7 @@ public class Space {
 				p1.updatePos(t);
 			}
 		}
-
+		
 		switch(mode) {
 		case Merging:
 			update_collisions_merging();
@@ -359,9 +361,7 @@ public class Space {
 	public void update_obstacle_collisions() {
 		for(int i =0;i< particles.size();i++){
 			for(int i2=0; i2 < obstacles.size();i2++) {
-				if(check_obstacle_collision(particles.get(i),obstacles.get(i2))) {
-					break;
-				}
+				check_obstacle_collision(particles.get(i),obstacles.get(i2));
 			}
 		}
 	}
@@ -370,73 +370,61 @@ public class Space {
 		//sides
 		for(int i = 0; i < o.points.size(); i++) {
 			if(i+1 == o.points.size()) {
-				if(check_line_obstacle_collision(o.points.get(i),o.points.get(0), p)) {
-					return true;
-				}
+				check_line_obstacle_collision(o.points.get(i),o.points.get(0), p);
 			}
 			else {
-				if(check_line_obstacle_collision(o.points.get(i),o.points.get(i+1), p)) {
-					return true;
-				}
+				check_line_obstacle_collision(o.points.get(i),o.points.get(i+1), p);
 			}
 		}
 
 		//points
 
 		for(int i = 0; i < o.points.size(); i++) {
-			if(check_point_obstacle_collision(o.points.get(i), p)) {
-				return true;
-			}
+			check_point_obstacle_collision(o.points.get(i), p);
 		}
 
 		return false;
 	}
 
 	public boolean check_line_obstacle_collision(double[] p1,double[] p2, Particle p) {
-		double vector_x=0;
-		double vector_y=0;
+		double vector_x=p2[0]-p1[0];
+		double vector_y=p2[1]-p1[1];
 
-		double vector_t=0;
-
-		double eVel=0;
-
-		double x=0;
-		double y=0;
-		double k=0;
-
-		double distance;
-
-		vector_x=p2[0]-p1[0];
-		vector_y=p2[1]-p1[1];
-
-		vector_t=Math.sqrt(Math.pow(vector_x,2) + Math.pow(vector_y,2));
+		double vector_t=Math.sqrt(Math.pow(vector_x,2) + Math.pow(vector_y,2));
 
 		vector_x/=vector_t;
 		vector_y/=vector_t;
 
-		k=vector_x*(p.pos[0]-p1[0])+vector_y*(p.pos[1]-p1[1]);
+		double k=vector_x*(p.pos[0]-p1[0])+vector_y*(p.pos[1]-p1[1]);
+		
+		double x=p1[0]+k*vector_x;
+		double y=p1[1]+k*vector_y;
+		
+		//
+		
+		double vector_2_x= x-p.pos[0];
+		double vector_2_y= y-p.pos[1];
 
-		x=p1[0]+k*vector_x;
-		y=p1[1]+k*vector_y;
+		double vector_2_t=Math.sqrt(Math.pow(vector_2_x,2) + Math.pow(vector_2_y,2));
 
-		if(Math.sqrt(Math.pow(p.pos[0]-x,2) + Math.pow(p.pos[1]-y,2)) <= p.diameter/2) {
-			distance=Math.sqrt(Math.pow(p2[0]-p1[0],2) + Math.pow(p2[1]-p1[1],2));
-			if(Math.sqrt(Math.pow(p2[0]-x,2) + Math.pow(p2[1]-y,2)) <= distance && Math.sqrt(Math.pow(p1[0]-x,2) + Math.pow(p1[1]-y,2)) <= distance) {
-				vector_x= x-p.pos[0];
-				vector_y= y-p.pos[1];
+		vector_2_x/=vector_2_t;
+		vector_2_y/=vector_2_t;
 
-				vector_t=Math.sqrt(Math.pow(vector_x,2) + Math.pow(vector_y,2));
+		if(vector_2_t <= p.diameter/2) {
+			if(Math.sqrt(Math.pow(p2[0]-x,2) + Math.pow(p2[1]-y,2)) <= vector_t && Math.sqrt(Math.pow(p1[0]-x,2) + Math.pow(p1[1]-y,2)) <= vector_t) {
+				double offset = (p.diameter/2)+extra-vector_2_t;
+				
+				p.pos[0] = p.pos[0] - offset*vector_2_x;
+				p.pos[1] = p.pos[1] - offset*vector_2_y;
 
-				vector_x/=vector_t;
-				vector_y/=vector_t;
-
-				eVel=p.vel[0]*vector_x+p.vel[1]*vector_y;
+				double eVel=p.vel[0]*vector_2_x+p.vel[1]*vector_2_y;
 
 				if(eVel > 0) {
-					p.vel[0]+=-2*eVel*vector_x;
-					p.vel[1]+=-2*eVel*vector_y;
-					return true;
+					p.vel[0]+=-2*eVel*vector_2_x;
+					p.vel[1]+=-2*eVel*vector_2_y;
 				}
+				
+				return true;
 			}
 		}
 
@@ -445,28 +433,28 @@ public class Space {
 
 
 	public boolean check_point_obstacle_collision(double[] p1, Particle p) {
-		double ex=0;
-		double ey=0;
-		double et=0;
+		double ex=p1[0]-p.pos[0];
+		double ey=p1[1]-p.pos[1];
 
-		double eVel=0;
+		double et=Math.sqrt(Math.pow(ex,2) + Math.pow(ey,2));
 
-		if(Math.sqrt(Math.pow(p1[0]-p.pos[0],2) + Math.pow(p1[1]-p.pos[1],2)) <= p.diameter/2) {
-			ex=p1[0]-p.pos[0];
-			ey=p1[1]-p.pos[1];
+		ex/=et;
+		ey/=et;
 
-			et=Math.sqrt(Math.pow(ex,2) + Math.pow(ey,2));
-
-			ex/=et;
-			ey/=et;
-
-			eVel=p.vel[0]*ex+p.vel[1]*ey;
+		if(et <= p.diameter/2) {
+			double offset = (p.diameter/2)+extra-et;
+			
+			p.pos[0] = p.pos[0] - offset*ex;
+			p.pos[1] = p.pos[1] - offset*ey;
+			
+			double eVel=p.vel[0]*ex+p.vel[1]*ey;
 
 			if(eVel > 0) {
 				p.vel[0]+=-2*eVel*ex;
 				p.vel[1]+=-2*eVel*ey;
-				return true;
 			}
+			
+			return true;
 		}
 
 		return false;
@@ -553,7 +541,6 @@ public class Space {
 		double targetDistance;
 		double proportion1=0.5;
 		double proportion2=0.5;
-		double extra = 0.01;
 		double versor[] = new double[2];
 
 
@@ -605,8 +592,8 @@ public class Space {
 					versor[0] = dx/r;
 					versor[1] = dy/r;
 
-					x=((targetDistance + extra)-r)*versor[0];
-					y=((targetDistance + extra)-r)*versor[1];
+					x=(targetDistance+extra-r)*versor[0];
+					y=(targetDistance+extra-r)*versor[1];
 
 
 					p1.pos[0]=p1.pos[0]+proportion1*x;
@@ -635,7 +622,6 @@ public class Space {
 		double targetDistance;
 		double proportion1=0.5;
 		double proportion2=0.5;
-		double extra = 0.01;
 		double versor[] = new double[2];
 
 
@@ -688,8 +674,8 @@ public class Space {
 					versor[1] = dy/r;
 
 
-					x=((targetDistance + extra)-r)*versor[0];
-					y=((targetDistance + extra)-r)*versor[1];
+					x=(targetDistance+extra-r)*versor[0];
+					y=(targetDistance+extra-r)*versor[1];
 
 
 					p1.pos[0]=p1.pos[0]+proportion1*x;
@@ -812,7 +798,6 @@ public class Space {
 		double targetDistance;
 		double proportion1=0.5;
 		double proportion2=0.5;
-		double extra = 0.01;
 		double versor[] = new double[2];
 
 
@@ -865,8 +850,8 @@ public class Space {
 					versor[1] = dy/r;
 
 
-					x=((targetDistance + extra)-r)*versor[0];
-					y=((targetDistance + extra)-r)*versor[1];
+					x=(targetDistance+extra-r)*versor[0];
+					y=(targetDistance+extra-r)*versor[1];
 
 
 					p1.pos[0]=p1.pos[0]+proportion1*x;
@@ -902,7 +887,6 @@ public class Space {
 		double targetDistance;
 		double proportion1=0.5;
 		double proportion2=0.5;
-		double extra = 0.01;
 		double versor[] = new double[2];
 
 
@@ -955,8 +939,8 @@ public class Space {
 					versor[1] = dy/r;
 
 
-					x=((targetDistance + extra)-r)*versor[0];
-					y=((targetDistance + extra)-r)*versor[1];
+					x=(targetDistance+extra-r)*versor[0];
+					y=(targetDistance+extra-r)*versor[1];
 
 
 					p1.pos[0]=p1.pos[0]+proportion1*x;
