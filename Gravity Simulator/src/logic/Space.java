@@ -341,10 +341,8 @@ public class Space {
 			update_collisions_merging();
 			break;
 		case PoolBallsFast:
-			update_collisions_PoolBallsFast();
-			break;
 		case PoolBallsAccurate:
-			update_collisions_PoolBallsAccurate();
+			update_perfectly_elastic_collisions();
 			break;
 		case PoolBallsFastAccurate:
 			update_collisions_PoolBallsFastAcccurate();
@@ -527,7 +525,8 @@ public class Space {
 		}
 	}
 
-	public void update_collisions_PoolBallsFast(){
+
+	public void update_perfectly_elastic_collisions(){
 		double dx;
 		double dy;
 		double r;
@@ -541,7 +540,6 @@ public class Space {
 		double targetDistance;
 		double proportion1=0.5;
 		double proportion2=0.5;
-		double versor[] = new double[2];
 
 
 		for(int i =0;i< particles.size();i++){
@@ -565,9 +563,10 @@ public class Space {
 					v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1];
 
 
-					v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
-
-					v1_ex_after=v2_ex-v1_ex+v2_ex_after;
+					v1_ex_after=((p1.mass-p2.mass)*v1_ex + 2*p2.mass*v2_ex)/(p1.mass+p2.mass);
+					
+					v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p1.mass+p2.mass);
+					
 
 					if(Math.abs(v1_ex_after)==Math.abs(v2_ex_after)) {
 						proportion1=0.5;
@@ -577,7 +576,7 @@ public class Space {
 						proportion1=1;
 						proportion2=0;
 					}
-					else if(Math.abs(v1_ex_after) < Math.abs(v2_ex_after)) {
+					else {
 						proportion1=0;
 						proportion2=1;
 					}
@@ -589,93 +588,8 @@ public class Space {
 					p2.vel[1]=p2.vel[1]+((v2_ex_after - v2_ex)*ex[1]);
 
 
-					versor[0] = dx/r;
-					versor[1] = dy/r;
-
-					x=(targetDistance+extra-r)*versor[0];
-					y=(targetDistance+extra-r)*versor[1];
-
-
-					p1.pos[0]=p1.pos[0]+proportion1*x;
-					p2.pos[0]=p2.pos[0]-proportion2*x;
-
-					p1.pos[1]=p1.pos[1]+proportion1*y;
-					p2.pos[1]=p2.pos[1]-proportion2*y;
-				}
-			}		
-		}
-	}
-
-
-
-	public void update_collisions_PoolBallsAccurate(){
-		double dx;
-		double dy;
-		double r;
-		double x;
-		double y;
-		double ex[]=new double[2];
-		double v1_ex;
-		double v2_ex;
-		double v1_ex_after=0;
-		double v2_ex_after=0;
-		double targetDistance;
-		double proportion1=0.5;
-		double proportion2=0.5;
-		double versor[] = new double[2];
-
-
-		for(int i =0;i< particles.size();i++){
-			Particle p1 = particles.get(i);
-
-			for(int i2=i+1;i2<particles.size();i2++){	
-				Particle p2 = particles.get(i2);
-
-				dx=p1.pos[0]-p2.pos[0];
-				dy=p1.pos[1]-p2.pos[1];
-				r=Math.sqrt(dx*dx+dy*dy);
-				targetDistance=(p1.diameter+p2.diameter)/2;
-
-				if(r<=targetDistance){
-
-					ex[0]=dx/r;
-					ex[1]=dy/r;
-
-					v1_ex=p1.vel[0]*ex[0]+p1.vel[1]*ex[1];
-
-					v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1];
-
-
-					v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
-
-					v1_ex_after=v2_ex-v1_ex+v2_ex_after;
-
-					if(Math.abs(v1_ex_after)==Math.abs(v2_ex_after)) {
-						proportion1=0.5;
-						proportion2=0.5;
-					}
-					else if(Math.abs(v1_ex_after) > Math.abs(v2_ex_after)) {
-						proportion1=1;
-						proportion2=0;
-					}
-					else if(Math.abs(v1_ex_after) < Math.abs(v2_ex_after)) {
-						proportion1=0;
-						proportion2=1;
-					}
-
-					p1.vel[0]=p1.vel[0]+((v1_ex_after - v1_ex)*ex[0]);
-					p1.vel[1]=p1.vel[1]+((v1_ex_after - v1_ex)*ex[1]);
-
-					p2.vel[0]=p2.vel[0]+((v2_ex_after - v2_ex)*ex[0]);
-					p2.vel[1]=p2.vel[1]+((v2_ex_after - v2_ex)*ex[1]);
-
-
-					versor[0] = dx/r;
-					versor[1] = dy/r;
-
-
-					x=(targetDistance+extra-r)*versor[0];
-					y=(targetDistance+extra-r)*versor[1];
+					x=(targetDistance+extra-r)*ex[0];
+					y=(targetDistance+extra-r)*ex[1];
 
 
 					p1.pos[0]=p1.pos[0]+proportion1*x;
@@ -684,8 +598,10 @@ public class Space {
 					p1.pos[1]=p1.pos[1]+proportion1*y;
 					p2.pos[1]=p2.pos[1]-proportion2*y;
 
-					i=-1;
-					break;
+					if(this.mode == Mode.PoolBallsAccurate) {
+						i=-1;
+						break;
+					}
 				}
 			}		
 		}
@@ -798,7 +714,6 @@ public class Space {
 		double targetDistance;
 		double proportion1=0.5;
 		double proportion2=0.5;
-		double versor[] = new double[2];
 
 
 		for(int i =0;i< particles.size();i++){
@@ -822,10 +737,11 @@ public class Space {
 					v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1];
 
 
-					v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
+					v1_ex_after=((p1.mass-p2.mass)*v1_ex + 2*p2.mass*v2_ex)/(p1.mass+p2.mass);
 
-					v1_ex_after=v2_ex-v1_ex+v2_ex_after;
+					v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p1.mass+p2.mass);
 
+					
 					if(Math.abs(v1_ex_after)==Math.abs(v2_ex_after)) {
 						proportion1=0.5;
 						proportion2=0.5;
@@ -834,7 +750,7 @@ public class Space {
 						proportion1=1;
 						proportion2=0;
 					}
-					else if(Math.abs(v1_ex_after) < Math.abs(v2_ex_after)) {
+					else {
 						proportion1=0;
 						proportion2=1;
 					}
@@ -846,12 +762,8 @@ public class Space {
 					p2.vel[1]=p2.vel[1]+((v2_ex_after - v2_ex)*ex[1]);
 
 
-					versor[0] = dx/r;
-					versor[1] = dy/r;
-
-
-					x=(targetDistance+extra-r)*versor[0];
-					y=(targetDistance+extra-r)*versor[1];
+					x=(targetDistance+extra-r)*ex[0];
+					y=(targetDistance+extra-r)*ex[1];
 
 
 					p1.pos[0]=p1.pos[0]+proportion1*x;
@@ -887,7 +799,6 @@ public class Space {
 		double targetDistance;
 		double proportion1=0.5;
 		double proportion2=0.5;
-		double versor[] = new double[2];
 
 
 		for(int i =particles.size()-1;i>=0;i--){
@@ -910,10 +821,11 @@ public class Space {
 
 					v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1];
 
+					
+					v1_ex_after=((p1.mass-p2.mass)*v1_ex + 2*p2.mass*v2_ex)/(p1.mass+p2.mass);
 
-					v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
-
-					v1_ex_after=v2_ex-v1_ex+v2_ex_after;
+					v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p1.mass+p2.mass);
+					
 
 					if(Math.abs(v1_ex_after)==Math.abs(v2_ex_after)) {
 						proportion1=0.5;
@@ -923,7 +835,7 @@ public class Space {
 						proportion1=1;
 						proportion2=0;
 					}
-					else if(Math.abs(v1_ex_after) < Math.abs(v2_ex_after)) {
+					else {
 						proportion1=0;
 						proportion2=1;
 					}
@@ -934,13 +846,9 @@ public class Space {
 					p2.vel[0]=p2.vel[0]+((v2_ex_after - v2_ex)*ex[0]);
 					p2.vel[1]=p2.vel[1]+((v2_ex_after - v2_ex)*ex[1]);
 
-
-					versor[0] = dx/r;
-					versor[1] = dy/r;
-
-
-					x=(targetDistance+extra-r)*versor[0];
-					y=(targetDistance+extra-r)*versor[1];
+					
+					x=(targetDistance+extra-r)*ex[0];
+					y=(targetDistance+extra-r)*ex[1];
 
 
 					p1.pos[0]=p1.pos[0]+proportion1*x;

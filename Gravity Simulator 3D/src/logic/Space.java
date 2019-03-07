@@ -485,9 +485,9 @@ public void update_collisions_PoolBallsFast(){
 				v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1]+p2.vel[2]*ex[2];
 				
 				
-				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
+				v1_ex_after=((p1.mass-p2.mass)*v1_ex + 2*p2.mass*v2_ex)/(p1.mass+p2.mass);
 				
-				v1_ex_after=v2_ex-v1_ex+v2_ex_after;
+				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p1.mass+p2.mass);
 				
 				if(Math.abs(v1_ex_after)==Math.abs(v2_ex_after)) {
 					proportion1=0.5;
@@ -580,9 +580,9 @@ public void update_collisions_PoolBallsAccurate(){
 				v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1]+p2.vel[2]*ex[2];
 				
 				
-				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
+				v1_ex_after=((p1.mass-p2.mass)*v1_ex + 2*p2.mass*v2_ex)/(p1.mass+p2.mass);
 				
-				v1_ex_after=v2_ex-v1_ex+v2_ex_after;
+				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p1.mass+p2.mass);
 				
 				if(Math.abs(v1_ex_after)==Math.abs(v2_ex_after)) {
 					proportion1=0.5;
@@ -691,9 +691,9 @@ public int update_collisions_PoolBallsFastAcccurate_1(){
 				v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1]+p2.vel[2]*ex[2];
 				
 				
-				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
+				v1_ex_after=((p1.mass-p2.mass)*v1_ex + 2*p2.mass*v2_ex)/(p1.mass+p2.mass);
 				
-				v1_ex_after=v2_ex-v1_ex+v2_ex_after;
+				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p1.mass+p2.mass);
 				
 				if(Math.abs(v1_ex_after)==Math.abs(v2_ex_after)) {
 					proportion1=0.5;
@@ -792,9 +792,9 @@ public int update_collisions_PoolBallsFastAcccurate_2(){
 				v2_ex=p2.vel[0]*ex[0]+p2.vel[1]*ex[1]+p2.vel[2]*ex[2];
 				
 				
-				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p2.mass+p1.mass);
+				v1_ex_after=((p1.mass-p2.mass)*v1_ex + 2*p2.mass*v2_ex)/(p1.mass+p2.mass);
 				
-				v1_ex_after=v2_ex-v1_ex+v2_ex_after;
+				v2_ex_after=((p2.mass-p1.mass)*v2_ex + 2*p1.mass*v1_ex)/(p1.mass+p2.mass);
 				
 				if(Math.abs(v1_ex_after)==Math.abs(v2_ex_after)) {
 					proportion1=0.5;
