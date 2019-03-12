@@ -211,14 +211,13 @@ public class Space {
 
 			//calculate pi
 
-			/*particles.add(new Particle(27,0,0,0,1,50,rand.nextInt(4)));
-			particles.add(new Particle(79,0,-50,0,100.0,50,rand.nextInt(4)));
+			/*particles.add(new Particle(25,0,0,0,1,50,rand.nextInt(4)));
+			particles.add(new Particle(75,0,-50,0,100.0,50,rand.nextInt(4)));
 
 			ArrayList<double[]> points = new ArrayList();
 
 			points.add(new double[]{0, -80});
 			points.add(new double[]{0, 80});
-			points.add(new double[]{-20, 0});
 
 			obstacles.add(new Obstacle(points));*/
 
